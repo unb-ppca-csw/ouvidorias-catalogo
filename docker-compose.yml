@@ -6,13 +6,13 @@ networks:
 
 services:
 
-    testrpc1:
+    node1:
         build: ./testrpc-truffle
         networks:
             - ethereum-network
         ports:
             - "8001:8545"
         volumes:
-            - catalogo-project:/catalogo
+            - "./catalogo-project:/catalogo"
         working_dir: /catalogo
-        command: bash -c "testrpc"
+        command: bash -c "while true; do sleep 2; done"

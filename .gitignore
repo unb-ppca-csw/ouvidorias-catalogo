@@ -1,2 +1,6 @@
+# IDE
 .idea/
 *.iml
+
+# output do truffle
+catalogo-project/build

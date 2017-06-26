@@ -1,0 +1,18 @@
+version: '2'
+
+networks:
+    ethereum-network:
+        driver: bridge
+
+services:
+
+    testrpc1:
+        build: ./testrpc-truffle
+        networks:
+            - ethereum-network
+        ports:
+            - "8001:8545"
+        volumes:
+            - catalogo-project:/catalogo
+        working_dir: /catalogo
+        command: bash -c "testrpc"

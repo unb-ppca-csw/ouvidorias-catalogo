@@ -28,14 +28,17 @@ de comandos exata para reproduzir/executar o projeto.
 ```shell
 # Dentro do container
 
+# Mata testrpc anterior
+pkill node && testrpc &
+
 # redeploya todos os contratos
-truffle migrate --reset
+truffle migrate --reset --network unbtest
 
 # Executa os testes
 truffle test
 
 # Acessa o console
-truffle console
+truffle console --network unbtest
 
 # A partir de agora, dentro do console (note que deployed() retorna uma Promise)
 truffle(development)> Contrato.deployed().then((x) => c = x);

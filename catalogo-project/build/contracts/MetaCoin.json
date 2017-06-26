@@ -115,12 +115,12 @@
         }
       },
       "links": {
-        "ConvertLib": "0xf76f9c675c5275c25e4330b5d9032e2c078ea280"
+        "ConvertLib": "0x1aaa841a954f3ad92bfbdec5dddd081b576093d3"
       },
-      "address": "0x389b978a472546ea0e51f9816a344e068dd3cc25",
-      "updated_at": 1498442933498
+      "address": "0x842a7276d483948cf73c6fa91bcc162259c16eab",
+      "updated_at": 1498445119014
     }
   },
   "schema_version": "0.0.5",
-  "updated_at": 1498442933498
+  "updated_at": 1498445119014
 }

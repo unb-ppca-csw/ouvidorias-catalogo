@@ -1,4 +1,4 @@
-pragma solidity ^0.4.4;
+pragma solidity ^0.4.11;
 
 
 /// @title Catalogo de Ouvidorias para o Barramento de Ouvidorias
@@ -8,27 +8,26 @@ contract CatalogoOuvidorias {
 
     struct Ente {
         TipoEnte tipo;
-        string nome;   // nome do ente, caso se aplique (Uniao nao eh necessario). Ex.: 'Bahia', 'Salvador-BA'
+        bytes32 nome;   // nome do ente, caso se aplique (Uniao nao eh necessario). Ex.: 'Bahia', 'Salvador-BA'
     }
 
     struct Ouvidoria {
         address conta; // account Ethereum desta ouvidoria
-        string nome;   // nome do orgao
+        bytes32 nome;   // nome do orgao
         Ente ente; // ente a qual a ouvidoria pertence
-        bytes endpoint;   // URL da aplicacao/web service desta ouvidoria
+        bytes32 endpoint;   // URL da aplicacao/web service desta ouvidoria
     }
 
     Ouvidoria[] private ouvidorias;
 
-    function CatalogoOuvidorias(/* conta1 == sender */ string nome1, uint8 tipoEnte1, string nomeEnte1, bytes endpoint1
-//                                       address conta2, string nome2, uint8 tipoEnte2, string nomeEnte2, bytes endpoint2,
-//                                       address conta3, string nome3, uint8 tipoEnte3, string nomeEnte3, bytes endpoint3
-    ) {
+    /// Cria o catalogo com uma ouvidoria -- nao exigi tres porque seriam tantas variaveis que o solarity nao permite:
+    /// Compiler error (...): Stack too deep, try removing local variables.
+    function CatalogoOuvidorias(bytes32 nome, uint8 tipoEnte, bytes32 nomeEnte, bytes32 endpoint) {
         ouvidorias.push(Ouvidoria({
             conta: msg.sender,
-            nome: nome1,
-            ente: Ente({tipo: toTipoEnte(tipoEnte1), nome: nomeEnte1}),
-            endpoint: endpoint1
+            nome: nome,
+            ente: Ente({tipo: toTipoEnte(tipoEnte), nome: nomeEnte}),
+            endpoint: endpoint
         }));
     }
 

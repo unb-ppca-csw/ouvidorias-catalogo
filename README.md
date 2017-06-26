@@ -2,6 +2,26 @@
 
 Implementação do catálogo de ouvidorias utilizando smart contracts em Ethereum.
 
+# IMPORTANTE:
+ 
+Como o projeto ainda está em **desenvolvimento** toda esta documentação é **temporária** (e, em muitas
+partes, pode estar desatualizada). Assim que a estrutura geral estabilizar, será gerada uma sequência
+de comandos exata para reproduzir/executar o projeto.
+
+# Requisitos
+
+**Docker + Docker Compose**. Todo o resto é executado dentro de containers.
+
+# Estrutura
+
+- `catalogo-project/`
+    - Projeto principal, utilizando truffle/solidity/js
+- `docker-ethereum/`
+    - Docker compose que acessa a `testnet` utilizando o cliente `geth`
+- `testrpc-truffle/`
+    - Simples `Dockerfile` contendo o `testrpc` e o `truffle` instalados
+- `/`
+    - Docker compose que executa o projeto (em `catalogo-project`) na imagem `testrpc-truffle`
 
 # Roteiro
 

@@ -70,7 +70,18 @@ contract CatalogoOuvidorias {
 
     // Uma ouvidoria cadastrada pode votar em outra
     function votar(address ouvidoriaCandidata) {
-        log1('votando', '2');
+        // verificar se ouvidorias contem msg.sender
+        // caso contenha, candidatasComVotos[ouvidoriaCandidata]++ (testar para caso nao tenha votos anteriores)
+        // caso nao tenha, ERRO!
+    }
+
+    // Uma ouvidoria com bastante votos pode cadastrar-se
+    function cadastrar(bytes32 nome, uint8 tipoEnte, bytes32 nomeEnte, bytes32 endpoint) {
+        // TODO mover logica do construtor para funcao interna dedicada e usa-la por aqui
+
+        // verificar se msg.sender estah no array de votadas e se qtdVotos >= min(ouvidoriasCadastradas.length, 3)
+        // caso nao tenha os votos, ERRO!
+        // caso tenha, chamar funcao refatorada do TODO acima
     }
 
     // converte bytes32 em string

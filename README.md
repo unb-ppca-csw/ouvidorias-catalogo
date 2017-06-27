@@ -34,7 +34,8 @@ docker-compose up -d
 # para localizar o container que acabou de subir 
 docker ps
 # acesse o bash do container (nele você poderah executar os demais comandos)
-docker exec -it <nome_ou_hash_do_container> bash
+# no exemplo abaixo, o nome do container encontrado no comando anterior foi ouvidoriascatalogo_node1_1
+docker exec -it ouvidoriascatalogo_node1_1 bash
 ```
 
 ## Rodar testes (unitarios/integracao)

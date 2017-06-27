@@ -1,0 +1,18 @@
+{
+  "name": "catalogo-project",
+  "version": "1.0.0",
+  "description": "Implementação do Catálogo de Ouvidorias usando Smart Contracts Ethereum",
+  "main": "truffle.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "iniciar-rede": "testrpc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^8.0.3"
+  }
+}

@@ -97,26 +97,26 @@ contract('CatalogoOuvidorias', function (accounts) {
 
         it("ouvidoria jah cadastrada pode chamar autorizar", function () {
             return catalogoOuvidoriasPromise.then((catalogoOuvidorias) => {
-                return catalogoOuvidorias.autorizar(segundaAccount, {from: primeiraAccount}).then((resultadoTransacao) => {
-                    assert.deepEqual(
-                        getPrimeiroDebug(resultadoTransacao),
-                        {
-                            endereco: primeiraAccount,
-                            texto: "autorizar",
-                            booleano: true
-                        }
-                    );
-                });
+                return catalogoOuvidorias.autorizar(segundaAccount, {from: primeiraAccount});
+            }).then((resultadoTransacao) => {
+                assert.deepEqual(
+                    getPrimeiroDebug(resultadoTransacao),
+                    {
+                        endereco: primeiraAccount,
+                        texto: "autorizar",
+                        booleano: true
+                    }
+                );
             });
         });
 
         it("ouvidoria nao cadastrada NAO pode chamar autorizar", function () {
             return catalogoOuvidoriasPromise.then((catalogoOuvidorias) => {
-                return catalogoOuvidorias.autorizar(primeiraAccount, {from: segundaAccount}).then(() => {
-                    assert.fail("segunda account nao estah cadastrada, portanto deveria dar erro")
-                }).catch((erro) => {
-                    assert.equal(erro.message, 'VM Exception while processing transaction: invalid opcode');
-                });
+                return catalogoOuvidorias.autorizar(primeiraAccount, {from: segundaAccount});
+            }).then(() => {
+                assert.fail("segunda account nao estah cadastrada, portanto deveria dar erro")
+            }).catch((erro) => {
+                assert.equal(erro.message, 'VM Exception while processing transaction: invalid opcode');
             });
         });
     });

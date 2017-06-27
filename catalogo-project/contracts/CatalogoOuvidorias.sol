@@ -1,6 +1,5 @@
 pragma solidity ^0.4.11;
 
-
 /// @title Catalogo de Ouvidorias para o Barramento de Ouvidorias
 contract CatalogoOuvidorias {
 
@@ -53,12 +52,12 @@ contract CatalogoOuvidorias {
         return enderecosOuvidorias[i];
     }
 
-    function getOuvidoriaNome(address ouvidoria) constant returns (bytes32) {
-        return ouvidorias[ouvidoria].nome;
+    function getOuvidoriaNome(address ouvidoria) constant returns (string) {
+        return toString(ouvidorias[ouvidoria].nome);
     }
 
-    function getOuvidoriaEndpoint(address ouvidoria) constant returns (bytes32) {
-        return ouvidorias[ouvidoria].endpoint;
+    function getOuvidoriaEndpoint(address ouvidoria) constant returns (string) {
+        return toString(ouvidorias[ouvidoria].endpoint);
     }
 
     function getOuvidoriaEnteTipo(address ouvidoria) constant returns (uint) {
@@ -66,7 +65,7 @@ contract CatalogoOuvidorias {
     }
 
     function getOuvidoriaEnteNome(address ouvidoria) constant returns (string) {
-        return toS(ouvidorias[ouvidoria].ente.nome);
+        return toString(ouvidorias[ouvidoria].ente.nome);
     }
 
     // Uma ouvidoria cadastrada pode votar em outra
@@ -75,7 +74,7 @@ contract CatalogoOuvidorias {
     }
 
     // converte bytes32 em string
-    function toS(bytes32 x) constant returns (string) {
+    function toString(bytes32 x) constant returns (string) {
         bytes memory bytesString = new bytes(32);
         uint charCount = 0;
         for (uint j = 0; j < 32; j++) {

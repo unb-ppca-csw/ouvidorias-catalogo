@@ -23,19 +23,41 @@ de comandos exata para reproduzir/executar o projeto.
 - `/`
     - Docker compose que executa o projeto (em `catalogo-project`) na imagem `testrpc-truffle`
 
-# Roteiro
+# Roteiros
+
+Os comandos abaixo devem ser executados dentro do container de `testrpc-truffle`. Para subir o container, execute,
+na raiz deste projeto (isto eh, a mesma pasta onde este README.md se encontra):
 
 ```shell
-# Dentro do container
+# subir compose
+docker-compose up -d
+# para localizar o container que acabou de subir 
+docker ps
+# acesse o bash do container (nele você poderah executar os demais comandos)
+docker exec -it <nome_ou_hash_do_container> bash
+```
 
-# Mata testrpc anterior
+## Rodar testes (unitarios/integracao)
+
+```shell
+# Mata testrpc anterior, se existir, e sobe um testrpc novo
 pkill node && testrpc &
 
 # redeploya todos os contratos
 truffle migrate --reset --network unbtest
 
 # Executa os testes
-truffle test
+truffle test --network unbtest
+```
+
+## Rodar demonstracao
+
+```shell
+# Mata testrpc anterior
+pkill node && testrpc &
+
+# redeploya todos os contratos
+truffle migrate --reset --network unbtest
 
 # Acessa o console
 truffle console --network unbtest
@@ -47,8 +69,5 @@ truffle(unbtest)> migrate --reset
 ...
 
 # Executa script com varias demonstracoes
-truffle(unbtest)> exec demonstracao.js
-
-
-
+truffle(unbtest)> exec src/demonstracao.js
 ```

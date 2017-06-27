@@ -40,8 +40,15 @@ truffle test
 # Acessa o console
 truffle console --network unbtest
 
-# A partir de agora, dentro do console (note que deployed() retorna uma Promise)
-truffle(development)> Contrato.deployed().then((x) => c = x);
+# A partir de agora, dentro do console
+
+# Refaz o deploy dos contratos (caso nao tenha feito antes)
+truffle(unbtest)> migrate --reset
+...
+
+# Executa script com varias demonstracoes
+truffle(unbtest)> exec demonstracao.js
+
 
 
 ```

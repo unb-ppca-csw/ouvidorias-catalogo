@@ -3,6 +3,6 @@
 *.iml
 
 # output do truffle
-catalogo-project/
+catalogo-project/build/
 
 node_modules/

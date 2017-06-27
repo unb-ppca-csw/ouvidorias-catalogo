@@ -41,23 +41,29 @@ contract('CatalogoOuvidorias', function (accounts) {
         );
     });
 
-    it("construtor cria corretamente catalogo", function () {
+    describe("CatalogoOuvidorias criado em testes", function() {
         let nomeOuvidoria = "CGU-DF";
         let enteTipoCodigo = 1;
         let enteTipoPorExtenso = 'Estado/DF';
         let enteNome = "DF";
         let endpoint = "http://cgu.gov.br/ouv-df";
 
-        const contractInstance = CatalogoOuvidorias.new(nomeOuvidoria, enteTipoCodigo, enteNome, endpoint);
+        let catalogoOuvidoriasPromise;
 
-        return assertPrimeiraOuvidoria(
-            contractInstance,
-            accounts[0],
-            nomeOuvidoria,
-            enteTipoPorExtenso,
-            enteNome,
-            endpoint
-        );
+        beforeEach(function () {
+            catalogoOuvidoriasPromise = CatalogoOuvidorias.new(nomeOuvidoria, enteTipoCodigo, enteNome, endpoint);
+        });
+
+        it("construtor cria corretamente catalogo de testes", function () {
+            return assertPrimeiraOuvidoria(
+                catalogoOuvidoriasPromise,
+                accounts[0],
+                nomeOuvidoria,
+                enteTipoPorExtenso,
+                enteNome,
+                endpoint
+            );
+        });
     });
 
 });

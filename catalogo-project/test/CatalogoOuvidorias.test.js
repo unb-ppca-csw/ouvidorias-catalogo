@@ -1,23 +1,28 @@
 const TipoEnte = require("../src/TipoEnte");
 const CatalogoOuvidorias = artifacts.require("./CatalogoOuvidorias.sol");
 
-function bytes32ToString(hexx) {
-    const hex = hexx.toString();//force conversion
-    let str = '';
-    for (let i = 0; i < hex.length; i += 2)
-        str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
-    return str.substring(1);
+/* FUNCOES UTILITARIAS */
+
+function clonarDebugConvertendoBytes32(log) {
+    function bytes32ToString(hexx) {
+        const hex = hexx.toString();
+        let str = '';
+        for (let i = 0; i < hex.length; i += 2)
+            str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+        return str.replace(/\u0000/g, '');
+    }
+    let retorno = Object.assign({}, log.args);
+    retorno.texto = bytes32ToString(retorno.texto);
+    return retorno;
 }
 
 //noinspection JSUnusedLocalSymbols
-function printLogs(resultadoTransacao) {
-    let logs = resultadoTransacao.receipt.logs;
-    logs.forEach((log) => console.log('Log: ', bytes32ToString(log.data)));
+function printDebugs(resultadoTransacao) {
+    resultadoTransacao.logs.forEach((log) => console.log(clonarDebugConvertendoBytes32(log)));
 }
 
-function getFirstLog(resultadoTransacao) {
-    let logs = resultadoTransacao.receipt.logs;
-    return bytes32ToString(logs[0].data);
+function getPrimeiroDebug(resultadoTransacao) {
+    return clonarDebugConvertendoBytes32(resultadoTransacao.logs[0]);
 }
 
 function assertPrimeiraOuvidoria(contractInstance, _account, _nome, _enteTipo, _enteNome, _endpoint) {
@@ -72,6 +77,9 @@ contract('CatalogoOuvidorias', function (accounts) {
 
         let catalogoOuvidoriasPromise;
 
+        let primeiraAccount = accounts[0];
+        let segundaAccount = accounts[1];
+
         beforeEach(function () {
             catalogoOuvidoriasPromise = CatalogoOuvidorias.new(nomeOuvidoria, enteTipoCodigo, enteNome, endpoint);
         });
@@ -79,7 +87,7 @@ contract('CatalogoOuvidorias', function (accounts) {
         it("construtor cria corretamente catalogo de testes", function () {
             return assertPrimeiraOuvidoria(
                 catalogoOuvidoriasPromise,
-                accounts[0],
+                primeiraAccount,
                 nomeOuvidoria,
                 enteTipoPorExtenso,
                 enteNome,
@@ -87,10 +95,27 @@ contract('CatalogoOuvidorias', function (accounts) {
             );
         });
 
-        it("chamar autorizar", function () {
+        it("ouvidoria jah cadastrada pode chamar autorizar", function () {
             return catalogoOuvidoriasPromise.then((catalogoOuvidorias) => {
-                return catalogoOuvidorias.autorizar(accounts[0]).then((resultadoTransacao) => {
-                    assert.equal('autorizar', getFirstLog(resultadoTransacao));
+                return catalogoOuvidorias.autorizar(segundaAccount, {from: primeiraAccount}).then((resultadoTransacao) => {
+                    assert.deepEqual(
+                        getPrimeiroDebug(resultadoTransacao),
+                        {
+                            endereco: primeiraAccount,
+                            texto: "autorizar",
+                            booleano: true
+                        }
+                    );
+                });
+            });
+        });
+
+        it("ouvidoria nao cadastrada NAO pode chamar autorizar", function () {
+            return catalogoOuvidoriasPromise.then((catalogoOuvidorias) => {
+                return catalogoOuvidorias.autorizar(primeiraAccount, {from: segundaAccount}).then(() => {
+                    assert.fail("segunda account nao estah cadastrada, portanto deveria dar erro")
+                }).catch((erro) => {
+                    assert.equal(erro.message, 'VM Exception while processing transaction: invalid opcode');
                 });
             });
         });

@@ -15,6 +15,11 @@ contract CatalogoOuvidorias {
         bytes32 nome;   // nome do orgao
         Ente ente; // ente a qual a ouvidoria pertence
         bytes32 endpoint;   // URL da aplicacao/web service desta ouvidoria
+
+        // variavel de controle pq o solidity eh peh duro e nao fornece maneiras de testar se uma chave existe no map
+        // https://ethereum.stackexchange.com/a/13029
+        // https://ethereum.meta.stackexchange.com/questions/443/blog-simple-storage-patterns-in-solidity
+        bool existe;
     }
 
     address[] enderecosOuvidorias;
@@ -25,7 +30,7 @@ contract CatalogoOuvidorias {
 
     event ouvidoriasAtualizadas(address conta, bytes32 nome, uint8 tipoEnte, bytes32 nomeEnte, bytes32 endpoint);
 
-    event debug(address a, string texto);
+    event debug(address endereco, bytes32 texto, bool booleano);
 
     /// Cria o catalogo com uma ouvidoria -- nao exigi tres porque seriam tantas variaveis que o solarity nao permite:
     /// Compiler error (...): Stack too deep, try removing local variables.
@@ -34,7 +39,8 @@ contract CatalogoOuvidorias {
             conta: msg.sender,
             nome: nome,
             ente: Ente({tipo: toTipoEnte(tipoEnte), nome: nomeEnte}),
-            endpoint: endpoint
+            endpoint: endpoint,
+            existe: true
         });
         enderecosOuvidorias.push(msg.sender);
     }
@@ -73,10 +79,14 @@ contract CatalogoOuvidorias {
     // Uma ouvidoria cadastrada pode autorizar outra
     function autorizar(address ouvidoriaCandidata) {
         // verificar se ouvidorias contem msg.sender
+        require(isOuvidoriaCadastrada(msg.sender));
         // caso contenha, candidatasComVotos[ouvidoriaCandidata]++ (testar para caso nao tenha votos anteriores)
         // caso nao tenha, ERRO!
-        log0("autorizar");
-        debug(ouvidoriaCandidata, "autorizar");
+        debug(msg.sender, "autorizar", isOuvidoriaCadastrada(msg.sender));
+    }
+
+    function isOuvidoriaCadastrada(address enderecoOuvidoria) constant returns (bool) {
+        return ouvidorias[enderecoOuvidoria].existe;
     }
 
     // Uma ouvidoria com bastante votos pode cadastrar-se

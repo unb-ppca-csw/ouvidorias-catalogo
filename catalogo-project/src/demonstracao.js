@@ -1,4 +1,4 @@
-const TipoEnte = require("./src/TipoEnte");
+const TipoEnte = require("./TipoEnte");
 const CatalogoOuvidorias = artifacts.require("./CatalogoOuvidorias.sol");
 
 // http://truffle.readthedocs.io/en/beta/getting_started/scripts/

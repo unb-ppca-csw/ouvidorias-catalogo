@@ -1,6 +1,5 @@
+const TipoEnte = require("./src/TipoEnte");
 const CatalogoOuvidorias = artifacts.require("./CatalogoOuvidorias.sol");
-
-const TipoEnte = ['Uniao', 'Estado/DF', 'Município'];
 
 // http://truffle.readthedocs.io/en/beta/getting_started/scripts/
 module.exports = function(finalizarExecucao) {

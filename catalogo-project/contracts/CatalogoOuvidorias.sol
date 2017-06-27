@@ -21,9 +21,11 @@ contract CatalogoOuvidorias {
 
     mapping(address => Ouvidoria) private ouvidorias;
 
-    mapping(address => uint8) public candidatas;
+    mapping(address => uint8) public ouvidoriasCandidatasComAutorizacoes;
 
     event ouvidoriasAtualizadas(address conta, bytes32 nome, uint8 tipoEnte, bytes32 nomeEnte, bytes32 endpoint);
+
+    event debug(address a, string texto);
 
     /// Cria o catalogo com uma ouvidoria -- nao exigi tres porque seriam tantas variaveis que o solarity nao permite:
     /// Compiler error (...): Stack too deep, try removing local variables.
@@ -68,11 +70,13 @@ contract CatalogoOuvidorias {
         return toString(ouvidorias[ouvidoria].ente.nome);
     }
 
-    // Uma ouvidoria cadastrada pode votar em outra
-    function votar(address ouvidoriaCandidata) {
+    // Uma ouvidoria cadastrada pode autorizar outra
+    function autorizar(address ouvidoriaCandidata) {
         // verificar se ouvidorias contem msg.sender
         // caso contenha, candidatasComVotos[ouvidoriaCandidata]++ (testar para caso nao tenha votos anteriores)
         // caso nao tenha, ERRO!
+        log0("autorizar");
+        debug(ouvidoriaCandidata, "autorizar");
     }
 
     // Uma ouvidoria com bastante votos pode cadastrar-se

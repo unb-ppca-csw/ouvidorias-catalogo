@@ -53,9 +53,9 @@ function assertPrimeiraOuvidoria(contractInstance, _account, _nome, _enteTipo, _
 
 
 
-contract('CatalogoOuvidorias', function (accounts) {
+contract('CatalogoOuvidorias', (accounts) => {
 
-    it("script de deploy padrao constroi corretamente o contrato inicial", function () {
+    it("script de deploy padrao constroi corretamente o contrato inicial", () => {
         let contractInstance = CatalogoOuvidorias.deployed();
 
         return assertPrimeiraOuvidoria(
@@ -68,7 +68,7 @@ contract('CatalogoOuvidorias', function (accounts) {
         );
     });
 
-    describe("CatalogoOuvidorias criado em testes", function() {
+    describe("CatalogoOuvidorias criado em testes", () => {
         let nomeOuvidoria = "CGU-DF";
         let enteTipoCodigo = 1;
         let enteTipoPorExtenso = 'Estado/DF';
@@ -80,11 +80,11 @@ contract('CatalogoOuvidorias', function (accounts) {
         let primeiraAccount = accounts[0];
         let segundaAccount = accounts[1];
 
-        beforeEach(function () {
+        beforeEach(() => {
             catalogoOuvidoriasPromise = CatalogoOuvidorias.new(nomeOuvidoria, enteTipoCodigo, enteNome, endpoint);
         });
 
-        it("construtor cria corretamente catalogo de testes", function () {
+        it("construtor cria corretamente catalogo de testes", () => {
             return assertPrimeiraOuvidoria(
                 catalogoOuvidoriasPromise,
                 primeiraAccount,
@@ -95,7 +95,7 @@ contract('CatalogoOuvidorias', function (accounts) {
             );
         });
 
-        it("ouvidoria jah cadastrada pode chamar autorizar", function () {
+        it("ouvidoria jah cadastrada pode chamar autorizar", () => {
             return catalogoOuvidoriasPromise.then((catalogoOuvidorias) => {
                 return catalogoOuvidorias.autorizar(segundaAccount, {from: primeiraAccount});
             }).then((resultadoTransacao) => {
@@ -110,7 +110,7 @@ contract('CatalogoOuvidorias', function (accounts) {
             });
         });
 
-        it("ouvidoria nao cadastrada NAO pode chamar autorizar", function () {
+        it("ouvidoria nao cadastrada NAO pode chamar autorizar", () => {
             return catalogoOuvidoriasPromise.then((catalogoOuvidorias) => {
                 return catalogoOuvidorias.autorizar(primeiraAccount, {from: segundaAccount});
             }).then(() => {
@@ -120,7 +120,7 @@ contract('CatalogoOuvidorias', function (accounts) {
             });
         });
 
-        it("ouvidoria jah cadastrada nao pode autorizar uma outra ouvidoria mais de uma vez", function () {
+        it("ouvidoria jah cadastrada nao pode autorizar uma outra ouvidoria mais de uma vez", () => {
             return catalogoOuvidoriasPromise.then((catalogoOuvidorias) => {
                 return catalogoOuvidorias.autorizar(segundaAccount, {from: primeiraAccount}).then(() => {
                     return catalogoOuvidorias.autorizar(segundaAccount, {from: primeiraAccount});
@@ -132,8 +132,8 @@ contract('CatalogoOuvidorias', function (accounts) {
             })
         });
 
-        xit("ouvidoria jah cadastrada pode autorizar duas outras ouvidorias diferentes", function () {});
-        xit("ouvidoria jah cadastrada nao pode autorizar uma outra ouvidoria jah cadastrada", function () {});
+        xit("ouvidoria jah cadastrada pode autorizar duas outras ouvidorias diferentes", () => {});
+        xit("ouvidoria jah cadastrada nao pode autorizar uma outra ouvidoria jah cadastrada", () => {});
 
     });
 

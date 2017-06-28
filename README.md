@@ -23,9 +23,9 @@ Desta maneira, o mais importante do contrato são o construtor e dois métodos:
 # Estrutura
 
 - `catalogo-project/`
-    - Projeto principal, contendo código JavaScript e Solidity (utilizando o framework truffle).
+    - Projeto principal, contendo código JavaScript e Solidity (utilizando o framework [Truffle](https://github.com/trufflesuite/truffle)).
 - `docker-ethereum/`
-    - Docker compose que acessa a `testnet` utilizando o cliente `geth`.
+    - Docker compose que acessa a `testnet` utilizando o cliente [`geth`](https://github.com/ethereum/go-ethereum/wiki/geth).
 - `testrpc-truffle/`
     - Simples `Dockerfile` que gera uma imagem com o `testrpc` e o `truffle` instalados.
 - `samples/`

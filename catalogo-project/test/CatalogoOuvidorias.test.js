@@ -3,6 +3,10 @@ const CatalogoOuvidorias = artifacts.require("./CatalogoOuvidorias.sol");
 
 /* FUNCOES UTILITARIAS */
 
+function fail(mensagem) {
+    assert.fail(false, false, mensagem);
+}
+
 function clonarEventoConvertendoPropriedades(log, propriedadesBytes32, propriedadesUint) {
     function bytes32ToString(hexx) {
         const hex = hexx.toString();
@@ -137,7 +141,7 @@ contract('CatalogoOuvidorias', (accounts) => {
             return catalogoOuvidoriasPromise.then((catalogoOuvidorias) => {
                 return catalogoOuvidorias.autorizar(primeiraAccount, {from: segundaAccount});
             }).then(() => {
-                assert.fail(false, false, "segundaAccount nao estah cadastrada, portanto deveria dar erro")
+                fail("segundaAccount nao estah cadastrada, portanto deveria dar erro")
             }, (erro) => {
                 assert.equal(erro.message, 'VM Exception while processing transaction: invalid opcode');
             });
@@ -148,7 +152,7 @@ contract('CatalogoOuvidorias', (accounts) => {
                 return catalogoOuvidorias.autorizar(segundaAccount, {from: primeiraAccount}).then(() => {
                     return catalogoOuvidorias.autorizar(segundaAccount, {from: primeiraAccount});
                 }).then(() => {
-                    assert.fail(false, false, "primeiraAccount jah autorizou a segundaAccount, entao deveria dar erro")
+                    fail("primeiraAccount jah autorizou a segundaAccount, entao deveria dar erro")
                 }, (erro) => {
                     assert.equal(erro.message, 'VM Exception while processing transaction: invalid opcode');
                 });
@@ -162,7 +166,7 @@ contract('CatalogoOuvidorias', (accounts) => {
         it("candidata sem autorizacoes nao consegue cadastrar-se", () => {
             return catalogoOuvidoriasPromise.then((catalogoOuvidorias) => {
                 return catalogoOuvidorias.cadastrar("CGU-BA", 1, "BA", "http://cgu.gov.br/ouv-ba", {from: segundaAccount}).then(() => {
-                    assert.fail(false, false, "como a segundaAccount nao recebeu uma autorizacao, nao pode cadastrar-se")
+                    fail("como a segundaAccount nao recebeu uma autorizacao, nao pode cadastrar-se")
                 }, (erro) => {
                     assert.equal(erro.message, 'VM Exception while processing transaction: invalid opcode');
                 });

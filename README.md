@@ -2,24 +2,32 @@
 
 Implementação do catálogo de ouvidorias utilizando smart contracts em Ethereum.
 
-# IMPORTANTE:
- 
-Como o projeto ainda está em **desenvolvimento** toda esta documentação é **temporária** (e, em muitas
-partes, pode estar desatualizada). Assim que a estrutura geral estabilizar, será gerada uma sequência
-de comandos exata para reproduzir/executar o projeto.
+O blockchain armazenará dados das ouvidorias -- nome, ente e endpoint (URL) -- que deverão atender aos requisitos
+impostos pelo smart contract [`CatalogoOuvidorias`](catalogo-project/contracts/CatalogoOuvidorias.sol), resumidos como segue:
 
-# Requisitos
+- O contrato é criado no blockchain com uma ouvidoria inicial.
+- A segunda ouvidoria pode ser incluída, se **previamente** autorizada pela ouvidoria inicial.
+- A terceira ouvidoria pode ser incluída, se _previamente_ autorizada pelas duas ouvidorias já cadastradas.
+- A quarta ouvidoria em diante poderá ser incluída, se previamente autorizada por três **quaisquer** ouvidorias já cadastradas.
+
+Desta maneira, o mais importante do contrato são o construtor e dois métodos:
+- Construtor `function CatalogoOuvidorias(<dados da ouvidoria inicial>)` cria, com a ouvidoria inicial, o contrato para inserção no blockchain;
+- Método `function autorizar(<endereco da ouvidoria candidata>)` é chamado por uma ouvidoria cadastrada para autorizar uma ouvidoria candidata.
+- Método `function cadastrar(<dados da ouvidoria candidata>)` é chamado pela ouvidoria candidata (que já acumulou
+ o número de autorizações exigidas) para entrar no cadastro de ouvidorias.
+
+# Requisitos do Ambiente de Execução
 
 **Docker + Docker Compose**. Todo o resto é executado dentro de containers.
 
 # Estrutura
 
 - `catalogo-project/`
-    - Projeto principal, utilizando truffle/solidity/js
+    - Projeto principal, contendo código JavaScript e Solidity (utilizando o framework truffle).
 - `docker-ethereum/`
-    - Docker compose que acessa a `testnet` utilizando o cliente `geth`
+    - Docker compose que acessa a `testnet` utilizando o cliente `geth`.
 - `testrpc-truffle/`
-    - Simples `Dockerfile` contendo o `testrpc` e o `truffle` instalados
+    - Simples `Dockerfile` que gera uma imagem com o `testrpc` e o `truffle` instalados.
 - `samples/`
     - Fontes em geral de projetos interessantes que podem ser usados como exemplos.
 - `/`

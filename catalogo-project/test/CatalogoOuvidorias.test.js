@@ -6,6 +6,10 @@ const CatalogoOuvidorias = artifacts.require("./CatalogoOuvidorias.sol");
 function fail(mensagem) {
     assert.fail(false, false, mensagem);
 }
+function assertRequireFalhou(erro) {
+    // falha de alguma condicao dentro de um require(...) no solidity
+    assert.equal(erro.message, 'VM Exception while processing transaction: invalid opcode');
+}
 
 function clonarEventoConvertendoPropriedades(log, propriedadesBytes32, propriedadesUint) {
     function bytes32ToString(hexx) {
@@ -151,7 +155,7 @@ contract('CatalogoOuvidorias', (accounts) => {
             }).then(() => {
                 fail("ouvBA nao estah cadastrada, portanto nao pode autorizar ninguem")
             }, (erro) => {
-                assert.equal(erro.message, 'VM Exception while processing transaction: invalid opcode');
+                assertRequireFalhou(erro);
             });
         });
 
@@ -162,7 +166,7 @@ contract('CatalogoOuvidorias', (accounts) => {
                 }).then(() => {
                     fail("ouvDF jah autorizou a ouvBA, nao poderia autorizar uma segunda vez")
                 }, (erro) => {
-                    assert.equal(erro.message, 'VM Exception while processing transaction: invalid opcode');
+                    assertRequireFalhou(erro);
                 });
             })
         });
@@ -176,7 +180,7 @@ contract('CatalogoOuvidorias', (accounts) => {
                 return catalogoOuvidorias.cadastrar(ouvBA.nome, ouvBA.tipoEnte, ouvBA.nomeEnte, ouvBA.endpoint, {from: ouvBA.conta}).then(() => {
                     fail("como a ouvBA nao recebeu uma autorizacao, nao pode se cadastrar")
                 }, (erro) => {
-                    assert.equal(erro.message, 'VM Exception while processing transaction: invalid opcode');
+                    assertRequireFalhou(erro);
                 });
             });
         });

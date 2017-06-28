@@ -82,7 +82,6 @@ contract('CatalogoOuvidorias', (accounts) => {
 
         let primeiraAccount = accounts[0];
         let segundaAccount = accounts[1];
-        let terceiraAccount = accounts[2];
 
         beforeEach(() => {
             catalogoOuvidoriasPromise = CatalogoOuvidorias.new(nomeOuvidoria, enteTipoCodigo, enteNome, endpoint);
@@ -140,9 +139,16 @@ contract('CatalogoOuvidorias', (accounts) => {
             // soh vou conseguir implementar depois que o metodo de efetivacao de cadastro estiver concluido
         });
 
+        xit("candidata sem autorizacoes nao consegue cadastrar-se", () => { });
+
         xit("quando ha somente uma ouvidoria cadastrada, uma candidata consegue cadastrar-se tendo apenas uma autorizacao", () => { });
 
-        xit("candidata sem autorizacoes nao consegue cadastrar-se", () => { });
+        xit("quando ha somente duas ouvidorias cadastradas, uma candidata NAO consegue cadastrar-se tendo apenas uma autorizacao", () => { });
+        xit("quando ha somente duas ouvidorias cadastradas, uma candidata consegue cadastrar-se tendo apenas duas autorizacoes", () => { });
+
+        xit("quando ha tres ou mais ouvidorias cadastradas, uma candidata NAO consegue cadastrar-se tendo apenas uma autorizacao", () => { });
+        xit("quando ha tres ou mais ouvidorias cadastradas, uma candidata NAO consegue cadastrar-se tendo apenas duas autorizacoes", () => { });
+        xit("quando ha tres ou mais ouvidorias cadastradas, uma candidata consegue cadastrar-se tendo apenas tres autorizacoes", () => { });
 
     });
 

@@ -50,9 +50,12 @@ function assertPrimeiraOuvidoria(contractInstance, _account, _nome, _enteTipo, _
 }
 
 
-
-
-
+function assertPrimeiroDebug(resultadoTransacao, debugEsperado) {
+    assert.deepEqual(
+        getPrimeiroDebug(resultadoTransacao),
+        debugEsperado
+    );
+}
 contract('CatalogoOuvidorias', (accounts) => {
 
     it("script de deploy padrao constroi corretamente o contrato inicial", () => {
@@ -79,6 +82,7 @@ contract('CatalogoOuvidorias', (accounts) => {
 
         let primeiraAccount = accounts[0];
         let segundaAccount = accounts[1];
+        let terceiraAccount = accounts[2];
 
         beforeEach(() => {
             catalogoOuvidoriasPromise = CatalogoOuvidorias.new(nomeOuvidoria, enteTipoCodigo, enteNome, endpoint);
@@ -99,8 +103,8 @@ contract('CatalogoOuvidorias', (accounts) => {
             return catalogoOuvidoriasPromise.then((catalogoOuvidorias) => {
                 return catalogoOuvidorias.autorizar(segundaAccount, {from: primeiraAccount});
             }).then((resultadoTransacao) => {
-                assert.deepEqual(
-                    getPrimeiroDebug(resultadoTransacao),
+                assertPrimeiroDebug(
+                    resultadoTransacao,
                     {
                         endereco: primeiraAccount,
                         texto: "autorizar",
@@ -132,7 +136,23 @@ contract('CatalogoOuvidorias', (accounts) => {
             })
         });
 
-        xit("ouvidoria jah cadastrada pode autorizar duas outras ouvidorias diferentes", () => {});
+        it("ouvidoria jah cadastrada pode autorizar duas outras ouvidorias diferentes", () => {
+            return catalogoOuvidoriasPromise.then((catalogoOuvidorias) => {
+                return catalogoOuvidorias.autorizar(segundaAccount, {from: primeiraAccount}).then(() => {
+                    return catalogoOuvidorias.autorizar(terceiraAccount, {from: primeiraAccount});
+                }).then((resultadoTransacao) => {
+                    assertPrimeiroDebug(
+                        resultadoTransacao,
+                        {
+                            endereco: primeiraAccount,
+                            texto: "autorizar",
+                            booleano: false
+                        }
+                    );
+                });
+            })
+        });
+
         xit("ouvidoria jah cadastrada nao pode autorizar uma outra ouvidoria jah cadastrada", () => {});
 
     });

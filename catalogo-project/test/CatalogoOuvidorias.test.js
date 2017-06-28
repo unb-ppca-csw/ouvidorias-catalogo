@@ -3,7 +3,7 @@ const CatalogoOuvidorias = artifacts.require("./CatalogoOuvidorias.sol");
 
 /* FUNCOES UTILITARIAS */
 
-function clonarDebugConvertendoBytes32(log) {
+function clonarEventoConvertendoPropriedades(log, propriedadesBytes32, propriedadesUint) {
     function bytes32ToString(hexx) {
         const hex = hexx.toString();
         let str = '';
@@ -12,17 +12,41 @@ function clonarDebugConvertendoBytes32(log) {
         return str.replace(/\u0000/g, '');
     }
     let retorno = Object.assign({}, log.args);
-    retorno.texto = bytes32ToString(retorno.texto);
+    propriedadesBytes32.forEach((propBytes32) => {
+        retorno[propBytes32] = bytes32ToString(retorno[propBytes32]);
+    });
+    propriedadesUint.forEach((propUint) => {
+        retorno[propUint] = retorno[propUint].c[0];
+    });
     return retorno;
 }
 
-//noinspection JSUnusedLocalSymbols
-function printDebugs(resultadoTransacao) {
-    resultadoTransacao.logs.forEach((log) => console.log(clonarDebugConvertendoBytes32(log)));
+function assertPrimeiroEvento(resultadoTransacao, propriedadesBytes32, propriedadesUint, nomeTipoEvento, eventoEsperado) {
+    assert.deepEqual(
+        clonarEventoConvertendoPropriedades(resultadoTransacao.logs[0], propriedadesBytes32, propriedadesUint),
+        eventoEsperado
+    );
+    assert.equal(resultadoTransacao.logs[0].event, nomeTipoEvento);
 }
 
-function getPrimeiroDebug(resultadoTransacao) {
-    return clonarDebugConvertendoBytes32(resultadoTransacao.logs[0]);
+function assertDebug(resultadoTransacao, debugEsperado) {
+    assertPrimeiroEvento(
+        resultadoTransacao,
+        ["texto"],
+        [],
+        "debug",
+        debugEsperado
+    );
+}
+
+function assertEventoOuvidoriaCadastrada(resultadoTransacao, eventoEsperado) {
+    assertPrimeiroEvento(
+        resultadoTransacao,
+        ["nome", "nomeEnte", "endpoint"],
+        ["tipoEnte"],
+        "ouvidoriaCadastrada",
+        eventoEsperado
+    );
 }
 
 function assertPrimeiraOuvidoria(contractInstance, _account, _nome, _enteTipo, _enteNome, _endpoint) {
@@ -50,12 +74,9 @@ function assertPrimeiraOuvidoria(contractInstance, _account, _nome, _enteTipo, _
 }
 
 
-function assertPrimeiroDebug(resultadoTransacao, debugEsperado) {
-    assert.deepEqual(
-        getPrimeiroDebug(resultadoTransacao),
-        debugEsperado
-    );
-}
+
+
+
 contract('CatalogoOuvidorias', (accounts) => {
 
     it("script de deploy padrao constroi corretamente o contrato inicial", () => {
@@ -102,7 +123,7 @@ contract('CatalogoOuvidorias', (accounts) => {
             return catalogoOuvidoriasPromise.then((catalogoOuvidorias) => {
                 return catalogoOuvidorias.autorizar(segundaAccount, {from: primeiraAccount});
             }).then((resultadoTransacao) => {
-                assertPrimeiroDebug(
+                assertDebug(
                     resultadoTransacao,
                     {
                         endereco: primeiraAccount,
@@ -149,7 +170,24 @@ contract('CatalogoOuvidorias', (accounts) => {
             });
         });
 
-        xit("quando ha somente uma ouvidoria cadastrada, uma candidata consegue cadastrar-se tendo apenas uma autorizacao", () => { });
+        it("quando ha somente uma ouvidoria cadastrada, uma candidata consegue cadastrar-se tendo apenas uma autorizacao", () => {
+            return catalogoOuvidoriasPromise.then((catalogoOuvidorias) => {
+                return catalogoOuvidorias.autorizar(segundaAccount, {from: primeiraAccount}).then(() => {
+                    return catalogoOuvidorias.cadastrar("CGU-BA", 1, "BA", "http://cgu.gov.br/ouv-ba", {from: segundaAccount}).then((tx) => {
+                        assertEventoOuvidoriaCadastrada(
+                            tx,
+                            {
+                                conta: segundaAccount,
+                                nome: "CGU-BA",
+                                tipoEnte: 1,
+                                nomeEnte: "BA",
+                                endpoint: "http://cgu.gov.br/ouv-ba"
+                            }
+                        );
+                    });
+                });
+            });
+        });
 
         xit("quando ha somente duas ouvidorias cadastradas, uma candidata NAO consegue cadastrar-se tendo apenas uma autorizacao", () => { });
         xit("quando ha somente duas ouvidorias cadastradas, uma candidata consegue cadastrar-se tendo apenas duas autorizacoes", () => { });

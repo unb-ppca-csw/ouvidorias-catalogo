@@ -31,7 +31,7 @@ contract CatalogoOuvidorias {
 
     mapping(address => address[]) public ouvidoriasCandidatasComAutorizacoes;
 
-    event ouvidoriasAtualizadas(address conta, bytes32 nome, uint8 tipoEnte, bytes32 nomeEnte, bytes32 endpoint);
+    event ouvidoriaCadastrada(address conta, bytes32 nome, uint8 tipoEnte, bytes32 nomeEnte, bytes32 endpoint);
 
     event debug(address endereco, bytes32 texto, bool booleano);
 
@@ -112,6 +112,7 @@ contract CatalogoOuvidorias {
         // verificar se msg.sender estah no array de votadas e se qtdVotos >= min(ouvidoriasCadastradas.length, 3)
         // caso nao tenha os votos, ERRO!
         // caso tenha, chamar funcao refatorada do TODO acima
+        ouvidoriaCadastrada(msg.sender, nome, tipoEnte, nomeEnte, endpoint);
     }
 
     function quantidadeDeAutorizacoes(address ouvidoriaCandidata) constant returns (uint) {

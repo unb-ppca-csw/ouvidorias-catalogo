@@ -10,6 +10,9 @@ function assertRequireFalhou(erro) {
     // falha de alguma condicao dentro de um require(...) no solidity
     assert.equal(erro.message, 'VM Exception while processing transaction: invalid opcode');
 }
+function uint(_uint) {
+    return _uint.c[0];
+}
 
 function clonarEventoConvertendoPropriedades(log, propriedadesBytes32, propriedadesUint) {
     function bytes32ToString(hexx) {
@@ -24,7 +27,7 @@ function clonarEventoConvertendoPropriedades(log, propriedadesBytes32, proprieda
         retorno[propBytes32] = bytes32ToString(retorno[propBytes32]);
     });
     propriedadesUint.forEach((propUint) => {
-        retorno[propUint] = retorno[propUint].c[0];
+        retorno[propUint] = uint(retorno[propUint]);
     });
     return retorno;
 }
@@ -109,13 +112,19 @@ contract('CatalogoOuvidorias', (accounts) => {
             nomeEnte: "DF",
             endpoint: "http://cgu.gov.br/ouv-ba"
         };
-
         const ouvBA = {
             conta: accounts[1],
             nome: "CGU-BA",
             tipoEnte: 1,
             nomeEnte: "BA",
             endpoint: "http://cgu.gov.br/ouv-ba"
+        };
+        const ouvAJU = {
+            conta: accounts[2],
+            nome: "Pref. Aracaju",
+            tipoEnte: 2,
+            nomeEnte: "Aracaju-SE",
+            endpoint: "http://aracaju.se.gov.br/ouv"
         };
 
         let catalogoOuvidoriasPromise;
@@ -185,7 +194,7 @@ contract('CatalogoOuvidorias', (accounts) => {
             });
         });
 
-        it("quando ha somente uma ouvidoria cadastrada, uma candidata consegue cadastrar-se tendo apenas uma autorizacao", () => {
+        xit("quando ha somente uma ouvidoria cadastrada, uma candidata consegue cadastrar-se tendo apenas uma autorizacao", () => {
             return catalogoOuvidoriasPromise.then((catalogoOuvidorias) => {
                 return catalogoOuvidorias.autorizar(ouvBA.conta, {from: ouvDF.conta}).then(() => {
                     return catalogoOuvidorias.cadastrar(ouvBA.nome, ouvBA.tipoEnte, ouvBA.nomeEnte, ouvBA.endpoint, {from: ouvBA.conta}).then((tx) => {
@@ -193,6 +202,25 @@ contract('CatalogoOuvidorias', (accounts) => {
                             tx,
                             ouvBA
                         );
+                        return catalogoOuvidorias.getNumeroDeOuvidorias();
+                    }).then((numeroDeOuvidorias) => {
+                        assert.equal(uint(numeroDeOuvidorias), 2);
+                    });
+                });
+            });
+        });
+
+        xit("quando ha somente duas ouvidorias cadastradas, uma candidata NAO consegue cadastrar-se tendo apenas uma autorizacao", () => {
+            return catalogoOuvidoriasPromise.then((catalogoOuvidorias) => {
+                return catalogoOuvidorias.autorizar(ouvBA.conta, {from: ouvDF.conta}).then(() => {
+                    return catalogoOuvidorias.cadastrar(ouvBA.nome, ouvBA.tipoEnte, ouvBA.nomeEnte, ouvBA.endpoint, {from: ouvBA.conta});
+                }).then(() => {
+                    return catalogoOuvidorias.autorizar(ouvAJU.conta, {from: ouvDF.conta});
+                }).then(() => {
+                    return catalogoOuvidorias.cadastrar(ouvAJU.conta, ouvAJU.tipoEnte, ouvAJU.nomeEnte, ouvAJU.endpoint, {from: ouvAJU.conta}).then(() => {
+                        fail("como a ouvAJU nao recebeu uma autorizacao, nao poderia se cadastrar")
+                    }, (erro) => {
+                        assertRequireFalhou(erro);
                     });
                 });
             });

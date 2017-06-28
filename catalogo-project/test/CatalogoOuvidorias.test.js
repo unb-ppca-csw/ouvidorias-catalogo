@@ -149,7 +149,7 @@ contract('CatalogoOuvidorias', (accounts) => {
             return catalogoOuvidoriasPromise.then((catalogoOuvidorias) => {
                 return catalogoOuvidorias.autorizar(ouvDF.conta, {from: ouvBA.conta});
             }).then(() => {
-                fail("segundaAccount nao estah cadastrada, portanto deveria dar erro")
+                fail("ouvBA nao estah cadastrada, portanto nao pode autorizar ninguem")
             }, (erro) => {
                 assert.equal(erro.message, 'VM Exception while processing transaction: invalid opcode');
             });
@@ -160,7 +160,7 @@ contract('CatalogoOuvidorias', (accounts) => {
                 return catalogoOuvidorias.autorizar(ouvBA.conta, {from: ouvDF.conta}).then(() => {
                     return catalogoOuvidorias.autorizar(ouvBA.conta, {from: ouvDF.conta});
                 }).then(() => {
-                    fail("primeiraAccount jah autorizou a segundaAccount, entao deveria dar erro")
+                    fail("ouvDF jah autorizou a ouvBA, nao poderia autorizar uma segunda vez")
                 }, (erro) => {
                     assert.equal(erro.message, 'VM Exception while processing transaction: invalid opcode');
                 });
@@ -174,7 +174,7 @@ contract('CatalogoOuvidorias', (accounts) => {
         it("candidata sem autorizacoes nao consegue cadastrar-se", () => {
             return catalogoOuvidoriasPromise.then((catalogoOuvidorias) => {
                 return catalogoOuvidorias.cadastrar(ouvBA.nome, ouvBA.tipoEnte, ouvBA.nomeEnte, ouvBA.endpoint, {from: ouvBA.conta}).then(() => {
-                    fail("como a segundaAccount nao recebeu uma autorizacao, nao pode cadastrar-se")
+                    fail("como a ouvBA nao recebeu uma autorizacao, nao pode se cadastrar")
                 }, (erro) => {
                     assert.equal(erro.message, 'VM Exception while processing transaction: invalid opcode');
                 });
@@ -187,20 +187,13 @@ contract('CatalogoOuvidorias', (accounts) => {
                     return catalogoOuvidorias.cadastrar(ouvBA.nome, ouvBA.tipoEnte, ouvBA.nomeEnte, ouvBA.endpoint, {from: ouvBA.conta}).then((tx) => {
                         assertEventoOuvidoriaCadastrada(
                             tx,
-                            {
-                                conta: ouvBA.conta,
-                                nome: ouvBA.nome,
-                                tipoEnte: ouvBA.tipoEnte,
-                                nomeEnte: ouvBA.nomeEnte,
-                                endpoint: ouvBA.endpoint
-                            }
+                            ouvBA
                         );
                     });
                 });
             });
         });
 
-        xit("quando ha somente duas ouvidorias cadastradas, uma candidata NAO consegue cadastrar-se tendo apenas uma autorizacao", () => { });
         xit("quando ha somente duas ouvidorias cadastradas, uma candidata consegue cadastrar-se tendo apenas duas autorizacoes", () => { });
 
         xit("quando ha tres ou mais ouvidorias cadastradas, uma candidata NAO consegue cadastrar-se tendo apenas uma autorizacao", () => { });

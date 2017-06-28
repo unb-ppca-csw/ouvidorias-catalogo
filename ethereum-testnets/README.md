@@ -2,13 +2,13 @@ Aparentemente existem várias testnets.
 
 # Rinkeby
 
-Account: `0x1750dd0f8cd22ee9d849ab11ebc62adb37ffc10a`
+Account: [`0x1750dd0f8cd22ee9d849ab11ebc62adb37ffc10a`](https://rinkeby.etherscan.io/address/0x1750dd0f8cd22ee9d849ab11ebc62adb37ffc10a)
+
+- principal: https://www.rinkeby.io/
+- web3 provider: https://rinkeby.infura.io
+- block explorer: https://rinkeby.etherscan.io/
 
 Funciona muito bem.
-
-https://www.rinkeby.io/
-
-https://rinkeby.etherscan.io/address/0x414591e821aff891644de40e64e86af3c8f7c8b6
 
 
 # Ropsten

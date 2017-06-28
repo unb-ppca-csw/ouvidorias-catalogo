@@ -26,7 +26,7 @@ de comandos exata para reproduzir/executar o projeto.
 # Roteiros
 
 Os comandos abaixo devem ser executados dentro do container de `testrpc-truffle`. Para subir o container, execute,
-na raiz deste projeto (isto eh, a mesma pasta onde este README.md se encontra):
+na raiz deste projeto (isto eh, a mesma pasta onde este `README.md` se encontra):
 
 ```shell
 # subir compose
@@ -72,3 +72,8 @@ truffle(unbtest)> migrate --reset
 # Executa script com varias demonstracoes
 truffle(unbtest)> exec src/demonstracao.js
 ```
+
+
+# Outros
+
+As mensagens de commit deste repo buscam seguir [estas](http://karma-runner.github.io/1.0/dev/git-commit-msg.html) convencoes.

@@ -83,18 +83,18 @@ contract CatalogoOuvidorias {
     function autorizar(address ouvidoriaCandidata) {
         require(
             isOuvidoriaCadastrada(msg.sender) &&
-            autorizadoraNuncaAutorizouCandidataPreviamente(msg.sender, ouvidoriaCandidata)
+            autorizadoraNuncaAutorizouCandidata(msg.sender, ouvidoriaCandidata)
         );
         ouvidoriasCandidatasComAutorizacoes[ouvidoriaCandidata].push(msg.sender);
 
-        debug(msg.sender, "autorizar", autorizadoraNuncaAutorizouCandidataPreviamente(msg.sender, ouvidoriaCandidata));
+        debug(msg.sender, "autorizar", autorizadoraNuncaAutorizouCandidata(msg.sender, ouvidoriaCandidata));
     }
 
     function isOuvidoriaCadastrada(address enderecoOuvidoria) constant returns (bool) {
         return ouvidorias[enderecoOuvidoria].existe;
     }
 
-    function autorizadoraNuncaAutorizouCandidataPreviamente(address ouvidoriaAutorizadora, address ouvidoriaCandidata) constant returns (bool) {
+    function autorizadoraNuncaAutorizouCandidata(address ouvidoriaAutorizadora, address ouvidoriaCandidata) constant returns (bool) {
         var quemJahAutorizouEstaCandidata = ouvidoriasCandidatasComAutorizacoes[ouvidoriaCandidata];
         for (var i = 0; i < quemJahAutorizouEstaCandidata.length; i++) {
             if (quemJahAutorizouEstaCandidata[i] == ouvidoriaAutorizadora) {

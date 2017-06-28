@@ -1,0 +1,17 @@
+gethconsole:
+    image: kunstmaan/ethereum-geth-console
+    stdin_open: true
+    tty: true
+    links:
+        - rinkeby
+
+# Address: {1750dd0f8cd22ee9d849ab11ebc62adb37ffc10a}
+# 0x1750dd0f8cd22ee9d849ab11ebc62adb37ffc10a
+rinkeby:
+    build: .
+    stdin_open: true
+    tty: true
+    expose:
+    - 8545
+    - 30303
+

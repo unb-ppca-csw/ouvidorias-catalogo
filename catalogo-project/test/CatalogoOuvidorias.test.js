@@ -139,7 +139,15 @@ contract('CatalogoOuvidorias', (accounts) => {
             // soh vou conseguir implementar depois que o metodo de efetivacao de cadastro estiver concluido
         });
 
-        xit("candidata sem autorizacoes nao consegue cadastrar-se", () => { });
+        it("candidata sem autorizacoes nao consegue cadastrar-se", () => {
+            return catalogoOuvidoriasPromise.then((catalogoOuvidorias) => {
+                return catalogoOuvidorias.cadastrar("CGU-BA", 1, "BA", "http://cgu.gov.br/ouv-ba", {from: segundaAccount}).then(() => {
+                    assert.fail(false, false, "como a segundaAccount nao recebeu uma autorizacao, nao pode cadastrar-se")
+                }, (erro) => {
+                    assert.equal(erro.message, 'VM Exception while processing transaction: invalid opcode');
+                });
+            });
+        });
 
         xit("quando ha somente uma ouvidoria cadastrada, uma candidata consegue cadastrar-se tendo apenas uma autorizacao", () => { });
 

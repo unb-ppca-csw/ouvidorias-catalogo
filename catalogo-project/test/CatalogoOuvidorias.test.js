@@ -97,41 +97,49 @@ contract('CatalogoOuvidorias', (accounts) => {
     });
 
     describe("CatalogoOuvidorias criado em testes", () => {
-        let nomeOuvidoria = "CGU-DF";
-        let enteTipoCodigo = 1;
-        let enteTipoPorExtenso = 'Estado/DF';
-        let enteNome = "DF";
-        let endpoint = "http://cgu.gov.br/ouv-df";
+        const ouvDF = {
+            conta: accounts[0],
+            nome: "CGU-DF",
+            tipoEnte: 1,
+            tipoPorExtenso: "Estado/DF",
+            nomeEnte: "DF",
+            endpoint: "http://cgu.gov.br/ouv-ba"
+        };
+
+        const ouvBA = {
+            conta: accounts[1],
+            nome: "CGU-BA",
+            tipoEnte: 1,
+            nomeEnte: "BA",
+            endpoint: "http://cgu.gov.br/ouv-ba"
+        };
 
         let catalogoOuvidoriasPromise;
 
-        let primeiraAccount = accounts[0];
-        let segundaAccount = accounts[1];
-
         beforeEach(() => {
-            catalogoOuvidoriasPromise = CatalogoOuvidorias.new(nomeOuvidoria, enteTipoCodigo, enteNome, endpoint);
+            catalogoOuvidoriasPromise = CatalogoOuvidorias.new(ouvDF.nome, ouvDF.tipoEnte, ouvDF.nomeEnte, ouvDF.endpoint);
         });
 
         it("construtor cria corretamente catalogo de testes", () => {
             return assertPrimeiraOuvidoria(
                 catalogoOuvidoriasPromise,
-                primeiraAccount,
-                nomeOuvidoria,
-                enteTipoPorExtenso,
-                enteNome,
-                endpoint
+                ouvDF.conta,
+                ouvDF.nome,
+                ouvDF.tipoPorExtenso,
+                ouvDF.nomeEnte,
+                ouvDF.endpoint
             );
         });
 
         it("ouvidoria jah cadastrada pode chamar autorizar", () => {
             return catalogoOuvidoriasPromise.then((catalogoOuvidorias) => {
-                return catalogoOuvidorias.autorizar(segundaAccount, {from: primeiraAccount});
+                return catalogoOuvidorias.autorizar(ouvBA.conta, {from: ouvDF.conta});
             }).then((resultadoTransacao) => {
                 assertEventoOuvidoriaAutorizada(
                     resultadoTransacao,
                     {
-                        ouvidoriaAutorizadora: primeiraAccount,
-                        ouvidoriaCandidata: segundaAccount
+                        ouvidoriaAutorizadora: ouvDF.conta,
+                        ouvidoriaCandidata: ouvBA.conta
                     }
                 );
             });
@@ -139,7 +147,7 @@ contract('CatalogoOuvidorias', (accounts) => {
 
         it("ouvidoria nao cadastrada NAO pode chamar autorizar", () => {
             return catalogoOuvidoriasPromise.then((catalogoOuvidorias) => {
-                return catalogoOuvidorias.autorizar(primeiraAccount, {from: segundaAccount});
+                return catalogoOuvidorias.autorizar(ouvDF.conta, {from: ouvBA.conta});
             }).then(() => {
                 fail("segundaAccount nao estah cadastrada, portanto deveria dar erro")
             }, (erro) => {
@@ -149,8 +157,8 @@ contract('CatalogoOuvidorias', (accounts) => {
 
         it("ouvidoria jah cadastrada nao pode autorizar uma outra ouvidoria mais de uma vez", () => {
             return catalogoOuvidoriasPromise.then((catalogoOuvidorias) => {
-                return catalogoOuvidorias.autorizar(segundaAccount, {from: primeiraAccount}).then(() => {
-                    return catalogoOuvidorias.autorizar(segundaAccount, {from: primeiraAccount});
+                return catalogoOuvidorias.autorizar(ouvBA.conta, {from: ouvDF.conta}).then(() => {
+                    return catalogoOuvidorias.autorizar(ouvBA.conta, {from: ouvDF.conta});
                 }).then(() => {
                     fail("primeiraAccount jah autorizou a segundaAccount, entao deveria dar erro")
                 }, (erro) => {
@@ -165,7 +173,7 @@ contract('CatalogoOuvidorias', (accounts) => {
 
         it("candidata sem autorizacoes nao consegue cadastrar-se", () => {
             return catalogoOuvidoriasPromise.then((catalogoOuvidorias) => {
-                return catalogoOuvidorias.cadastrar("CGU-BA", 1, "BA", "http://cgu.gov.br/ouv-ba", {from: segundaAccount}).then(() => {
+                return catalogoOuvidorias.cadastrar(ouvBA.nome, ouvBA.tipoEnte, ouvBA.nomeEnte, ouvBA.endpoint, {from: ouvBA.conta}).then(() => {
                     fail("como a segundaAccount nao recebeu uma autorizacao, nao pode cadastrar-se")
                 }, (erro) => {
                     assert.equal(erro.message, 'VM Exception while processing transaction: invalid opcode');
@@ -175,16 +183,16 @@ contract('CatalogoOuvidorias', (accounts) => {
 
         it("quando ha somente uma ouvidoria cadastrada, uma candidata consegue cadastrar-se tendo apenas uma autorizacao", () => {
             return catalogoOuvidoriasPromise.then((catalogoOuvidorias) => {
-                return catalogoOuvidorias.autorizar(segundaAccount, {from: primeiraAccount}).then(() => {
-                    return catalogoOuvidorias.cadastrar("CGU-BA", 1, "BA", "http://cgu.gov.br/ouv-ba", {from: segundaAccount}).then((tx) => {
+                return catalogoOuvidorias.autorizar(ouvBA.conta, {from: ouvDF.conta}).then(() => {
+                    return catalogoOuvidorias.cadastrar(ouvBA.nome, ouvBA.tipoEnte, ouvBA.nomeEnte, ouvBA.endpoint, {from: ouvBA.conta}).then((tx) => {
                         assertEventoOuvidoriaCadastrada(
                             tx,
                             {
-                                conta: segundaAccount,
-                                nome: "CGU-BA",
-                                tipoEnte: 1,
-                                nomeEnte: "BA",
-                                endpoint: "http://cgu.gov.br/ouv-ba"
+                                conta: ouvBA.conta,
+                                nome: ouvBA.nome,
+                                tipoEnte: ouvBA.tipoEnte,
+                                nomeEnte: ouvBA.nomeEnte,
+                                endpoint: ouvBA.endpoint
                             }
                         );
                     });

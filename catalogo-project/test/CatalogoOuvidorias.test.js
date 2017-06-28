@@ -136,24 +136,13 @@ contract('CatalogoOuvidorias', (accounts) => {
             })
         });
 
-        it("ouvidoria jah cadastrada pode autorizar duas outras ouvidorias diferentes", () => {
-            return catalogoOuvidoriasPromise.then((catalogoOuvidorias) => {
-                return catalogoOuvidorias.autorizar(segundaAccount, {from: primeiraAccount}).then(() => {
-                    return catalogoOuvidorias.autorizar(terceiraAccount, {from: primeiraAccount});
-                }).then((resultadoTransacao) => {
-                    assertPrimeiroDebug(
-                        resultadoTransacao,
-                        {
-                            endereco: primeiraAccount,
-                            texto: "autorizar",
-                            booleano: false
-                        }
-                    );
-                });
-            })
+        xit("ouvidoria jah cadastrada nao pode autorizar uma outra ouvidoria jah cadastrada", () => {
+            // soh vou conseguir implementar depois que o metodo de efetivacao de cadastro estiver concluido
         });
 
-        xit("ouvidoria jah cadastrada nao pode autorizar uma outra ouvidoria jah cadastrada", () => {});
+        xit("quando ha somente uma ouvidoria cadastrada, uma candidata consegue cadastrar-se tendo apenas uma autorizacao", () => { });
+
+        xit("candidata sem autorizacoes nao consegue cadastrar-se", () => { });
 
     });
 

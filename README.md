@@ -20,6 +20,8 @@ de comandos exata para reproduzir/executar o projeto.
     - Docker compose que acessa a `testnet` utilizando o cliente `geth`
 - `testrpc-truffle/`
     - Simples `Dockerfile` contendo o `testrpc` e o `truffle` instalados
+- `samples/`
+    - Fontes em geral de projetos interessantes que podem ser usados como exemplos.
 - `/`
     - Docker compose que executa o projeto (em `catalogo-project`) na imagem `testrpc-truffle`
 

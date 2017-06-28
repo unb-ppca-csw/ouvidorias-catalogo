@@ -125,7 +125,7 @@ contract('CatalogoOuvidorias', (accounts) => {
                 return catalogoOuvidorias.autorizar(segundaAccount, {from: primeiraAccount}).then(() => {
                     return catalogoOuvidorias.autorizar(segundaAccount, {from: primeiraAccount});
                 }).then(() => {
-                    assert.fail("segunda account nao estah cadastrada, portanto deveria dar erro")
+                    assert.fail("1a account jah autorizou a 2a account, entao deveria dar erro")
                 }).catch((erro) => {
                     assert.equal(erro.message, 'VM Exception while processing transaction: invalid opcode');
                 });

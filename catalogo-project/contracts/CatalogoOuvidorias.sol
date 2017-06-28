@@ -33,7 +33,7 @@ contract CatalogoOuvidorias {
 
     event ouvidoriaCadastrada(address conta, bytes32 nome, uint8 tipoEnte, bytes32 nomeEnte, bytes32 endpoint);
 
-    event debug(address endereco, bytes32 texto, bool booleano);
+    event ouvidoriaAutorizada(address ouvidoriaAutorizadora, address ouvidoriaCandidata);
 
     /// Cria o catalogo com uma ouvidoria -- nao exigi tres porque seriam tantas variaveis que o solarity nao permite:
     /// Compiler error (...): Stack too deep, try removing local variables.
@@ -87,7 +87,7 @@ contract CatalogoOuvidorias {
         );
         ouvidoriasCandidatasComAutorizacoes[ouvidoriaCandidata].push(msg.sender);
 
-        debug(msg.sender, "autorizar", autorizadoraNuncaAutorizouCandidata(msg.sender, ouvidoriaCandidata));
+        ouvidoriaAutorizada(msg.sender, ouvidoriaCandidata);
     }
 
     function isOuvidoriaCadastrada(address enderecoOuvidoria) constant returns (bool) {

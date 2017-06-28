@@ -29,13 +29,13 @@ function assertPrimeiroEvento(resultadoTransacao, propriedadesBytes32, proprieda
     assert.equal(resultadoTransacao.logs[0].event, nomeTipoEvento);
 }
 
-function assertDebug(resultadoTransacao, debugEsperado) {
+function assertEventoOuvidoriaAutorizada(resultadoTransacao, eventoEsperado) {
     assertPrimeiroEvento(
         resultadoTransacao,
-        ["texto"],
         [],
-        "debug",
-        debugEsperado
+        [],
+        "ouvidoriaAutorizada",
+        eventoEsperado
     );
 }
 
@@ -123,12 +123,11 @@ contract('CatalogoOuvidorias', (accounts) => {
             return catalogoOuvidoriasPromise.then((catalogoOuvidorias) => {
                 return catalogoOuvidorias.autorizar(segundaAccount, {from: primeiraAccount});
             }).then((resultadoTransacao) => {
-                assertDebug(
+                assertEventoOuvidoriaAutorizada(
                     resultadoTransacao,
                     {
-                        endereco: primeiraAccount,
-                        texto: "autorizar",
-                        booleano: false
+                        ouvidoriaAutorizadora: primeiraAccount,
+                        ouvidoriaCandidata: segundaAccount
                     }
                 );
             });

@@ -1,6 +1,9 @@
 pragma solidity ^0.4.11;
 
 /// @title Catalogo de Ouvidorias para o Barramento de Ouvidorias
+/*
+    Cada ouvidoria somente pode autorizar uma vez.
+*/
 contract CatalogoOuvidorias {
 
     enum TipoEnte { Uniao, Estado, Municipio }
@@ -26,7 +29,7 @@ contract CatalogoOuvidorias {
 
     mapping(address => Ouvidoria) private ouvidorias;
 
-    mapping(address => uint8) public ouvidoriasCandidatasComAutorizacoes;
+    mapping(address => address[]) public ouvidoriasCandidatasComAutorizacoes;
 
     event ouvidoriasAtualizadas(address conta, bytes32 nome, uint8 tipoEnte, bytes32 nomeEnte, bytes32 endpoint);
 
@@ -78,15 +81,27 @@ contract CatalogoOuvidorias {
 
     // Uma ouvidoria cadastrada pode autorizar outra
     function autorizar(address ouvidoriaCandidata) {
-        // verificar se ouvidorias contem msg.sender
-        require(isOuvidoriaCadastrada(msg.sender));
-        // caso contenha, candidatasComVotos[ouvidoriaCandidata]++ (testar para caso nao tenha votos anteriores)
-        // caso nao tenha, ERRO!
-        debug(msg.sender, "autorizar", isOuvidoriaCadastrada(msg.sender));
+        require(
+            isOuvidoriaCadastrada(msg.sender) &&
+            autorizadoraNuncaAutorizouCandidataPreviamente(msg.sender, ouvidoriaCandidata)
+        );
+        ouvidoriasCandidatasComAutorizacoes[ouvidoriaCandidata].push(msg.sender);
+
+        debug(msg.sender, "autorizar", autorizadoraNuncaAutorizouCandidataPreviamente(msg.sender, ouvidoriaCandidata));
     }
 
     function isOuvidoriaCadastrada(address enderecoOuvidoria) constant returns (bool) {
         return ouvidorias[enderecoOuvidoria].existe;
+    }
+
+    function autorizadoraNuncaAutorizouCandidataPreviamente(address ouvidoriaAutorizadora, address ouvidoriaCandidata) constant returns (bool) {
+        var quemJahAutorizouEstaCandidata = ouvidoriasCandidatasComAutorizacoes[ouvidoriaCandidata];
+        for (var i = 0; i < quemJahAutorizouEstaCandidata.length; i++) {
+            if (quemJahAutorizouEstaCandidata[i] == ouvidoriaAutorizadora) {
+                return false;
+            }
+        }
+        return true;
     }
 
     // Uma ouvidoria com bastante votos pode cadastrar-se

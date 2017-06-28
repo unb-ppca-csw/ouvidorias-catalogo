@@ -104,7 +104,7 @@ contract('CatalogoOuvidorias', function (accounts) {
                     {
                         endereco: primeiraAccount,
                         texto: "autorizar",
-                        booleano: true
+                        booleano: false
                     }
                 );
             });
@@ -119,6 +119,22 @@ contract('CatalogoOuvidorias', function (accounts) {
                 assert.equal(erro.message, 'VM Exception while processing transaction: invalid opcode');
             });
         });
+
+        it("ouvidoria jah cadastrada nao pode autorizar uma outra ouvidoria mais de uma vez", function () {
+            return catalogoOuvidoriasPromise.then((catalogoOuvidorias) => {
+                return catalogoOuvidorias.autorizar(segundaAccount, {from: primeiraAccount}).then(() => {
+                    return catalogoOuvidorias.autorizar(segundaAccount, {from: primeiraAccount});
+                }).then(() => {
+                    assert.fail("segunda account nao estah cadastrada, portanto deveria dar erro")
+                }).catch((erro) => {
+                    assert.equal(erro.message, 'VM Exception while processing transaction: invalid opcode');
+                });
+            })
+        });
+
+        xit("ouvidoria jah cadastrada pode autorizar duas outras ouvidorias diferentes", function () {});
+        xit("ouvidoria jah cadastrada nao pode autorizar uma outra ouvidoria jah cadastrada", function () {});
+
     });
 
 });

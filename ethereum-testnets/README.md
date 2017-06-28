@@ -12,6 +12,28 @@ Account: [`0x1750dd0f8cd22ee9d849ab11ebc62adb37ffc10a`](https://rinkeby.ethersca
 
 Funciona muito bem.
 
+```shell
+# Subir 2 cointainers no background (-d)
+$ docker-compose up --build -d
+
+# Acesse o console
+$ docker attach rinkerby_gethconsole_1
+
+# Lá dentro, pressione seta pra cima, pra pegar o histórico, que vai abrir o comando:
+root@...> cd ~ && chmod +x geth-attach-rinkeby.sh && ./geth-attach-rinkeby.sh
+
+    Welcome to the Geth JavaScript console!
+    
+    instance: Geth/v1.6.5-stable-cf87713d/linux-amd64/go1.8.1
+     modules: eth:1.0 net:1.0 personal:1.0 rpc:1.0 web3:1.0
+    
+    > 
+
+
+# Verifique o saldo da conta primaria (se acontecer erro, tente novamente)
+> eth.getBalance(eth.accounts[0])
+```
+
 
 # Ropsten
 

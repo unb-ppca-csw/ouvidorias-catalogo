@@ -38,14 +38,18 @@ contract CatalogoOuvidorias {
     /// Cria o catalogo com uma ouvidoria -- nao exigi tres porque seriam tantas variaveis que o solarity nao permite:
     /// Compiler error (...): Stack too deep, try removing local variables.
     function CatalogoOuvidorias(bytes32 nome, uint8 tipoEnte, bytes32 nomeEnte, bytes32 endpoint) {
-        ouvidorias[msg.sender] = Ouvidoria({
-            conta: msg.sender,
+        inserirOuvidoriaNoCadastro(msg.sender, nome, tipoEnte, nomeEnte, endpoint);
+    }
+
+    function inserirOuvidoriaNoCadastro(address conta, bytes32 nome, uint8 tipoEnte, bytes32 nomeEnte, bytes32 endpoint) private {
+        ouvidorias[conta] = Ouvidoria({
+            conta: conta,
             nome: nome,
             ente: Ente({tipo: toTipoEnte(tipoEnte), nome: nomeEnte}),
             endpoint: endpoint,
             existe: true
         });
-        enderecosOuvidorias.push(msg.sender);
+        enderecosOuvidorias.push(conta);
     }
 
     function toTipoEnte(uint8 tipo) returns (TipoEnte) {

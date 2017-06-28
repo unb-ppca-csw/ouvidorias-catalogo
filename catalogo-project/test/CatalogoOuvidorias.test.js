@@ -117,8 +117,8 @@ contract('CatalogoOuvidorias', (accounts) => {
             return catalogoOuvidoriasPromise.then((catalogoOuvidorias) => {
                 return catalogoOuvidorias.autorizar(primeiraAccount, {from: segundaAccount});
             }).then(() => {
-                assert.fail("segunda account nao estah cadastrada, portanto deveria dar erro")
-            }).catch((erro) => {
+                assert.fail(false, false, "segundaAccount nao estah cadastrada, portanto deveria dar erro")
+            }, (erro) => {
                 assert.equal(erro.message, 'VM Exception while processing transaction: invalid opcode');
             });
         });
@@ -128,8 +128,8 @@ contract('CatalogoOuvidorias', (accounts) => {
                 return catalogoOuvidorias.autorizar(segundaAccount, {from: primeiraAccount}).then(() => {
                     return catalogoOuvidorias.autorizar(segundaAccount, {from: primeiraAccount});
                 }).then(() => {
-                    assert.fail("1a account jah autorizou a 2a account, entao deveria dar erro")
-                }).catch((erro) => {
+                    assert.fail(false, false, "primeiraAccount jah autorizou a segundaAccount, entao deveria dar erro")
+                }, (erro) => {
                     assert.equal(erro.message, 'VM Exception while processing transaction: invalid opcode');
                 });
             })

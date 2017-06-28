@@ -2,6 +2,8 @@ gethconsole:
     image: kunstmaan/ethereum-geth-console
     stdin_open: true
     tty: true
+    volumes:
+        - "./gethconsole:/root"
     links:
         - rinkeby
 

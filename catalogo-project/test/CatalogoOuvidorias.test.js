@@ -214,8 +214,18 @@ contract('CatalogoOuvidorias', (accounts) => {
             })
         });
 
-        xit("ouvidoria jah cadastrada nao pode autorizar uma outra ouvidoria jah cadastrada", () => {
-            // soh vou conseguir implementar depois que o metodo de efetivacao de cadastro estiver concluido
+        it("ouvidoria jah cadastrada NAO pode autorizar uma outra ouvidoria jah cadastrada", () => {
+            return catalogoOuvidoriasPromise.then((catalogoOuvidorias) => {
+                return catalogoOuvidorias.autorizar(ouvBA.conta, {from: ouvDF.conta}).then(() => {
+                    return catalogoOuvidorias.cadastrar(ouvBA.nome, ouvBA.tipoEnte, ouvBA.nomeEnte, ouvBA.endpoint, {from: ouvBA.conta});
+                }).then(() => {
+                    return catalogoOuvidorias.autorizar(ouvDF.conta, {from: ouvBA.conta})
+                }).then(() => {
+                    fail("como a ouvDF jah estah cadastrada, a ouvBA nao poderia autoriza-la")
+                }, (erro) => {
+                    assertRequireFalhou(erro);
+                });
+            });
         });
 
         it("candidata sem autorizacoes nao consegue cadastrar-se", () => {

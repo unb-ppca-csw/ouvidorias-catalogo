@@ -85,10 +85,11 @@ contract CatalogoOuvidorias {
         return toString(ouvidorias[ouvidoria].ente.nome);
     }
 
-    /// Uma ouvidoria cadastrada pode autorizar outra
+    /// Uma ouvidoria cadastrada pode autorizar outra que ainda nao se cadastrou
     function autorizar(address ouvidoriaCandidata) {
         require(
             isOuvidoriaCadastrada(msg.sender) &&
+            !isOuvidoriaCadastrada(ouvidoriaCandidata) &&
             autorizadoraNuncaAutorizouCandidata(msg.sender, ouvidoriaCandidata)
         );
         ouvidoriasCandidatasComAutorizacoes[ouvidoriaCandidata].push(msg.sender);

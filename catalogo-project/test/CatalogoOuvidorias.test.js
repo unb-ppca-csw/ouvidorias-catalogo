@@ -240,7 +240,7 @@ contract('CatalogoOuvidorias', (accounts) => {
                 }).then(() => {
                     return catalogoOuvidorias.autorizar(ouvAJU.conta, {from: ouvDF.conta});
                 }).then(() => {
-                    return catalogoOuvidorias.cadastrar(ouvAJU.conta, ouvAJU.tipoEnte, ouvAJU.nomeEnte, ouvAJU.endpoint, {from: ouvAJU.conta}).then(() => {
+                    return catalogoOuvidorias.cadastrar(ouvAJU.nome, ouvAJU.tipoEnte, ouvAJU.nomeEnte, ouvAJU.endpoint, {from: ouvAJU.conta}).then(() => {
                         fail("como a ouvAJU nao recebeu duas autorizacoes, nao poderia se cadastrar")
                     }, (erro) => {
                         assertRequireFalhou(erro);
@@ -249,7 +249,27 @@ contract('CatalogoOuvidorias', (accounts) => {
             });
         });
 
-        xit("quando ha somente duas ouvidorias cadastradas, uma candidata consegue cadastrar-se tendo apenas duas autorizacoes", () => { });
+        it("quando ha somente duas ouvidorias cadastradas, uma candidata consegue cadastrar-se tendo apenas duas autorizacoes", () => {
+            return catalogoOuvidoriasPromise.then((catalogoOuvidorias) => {
+                return catalogoOuvidorias.autorizar(ouvBA.conta, {from: ouvDF.conta}).then(() => {
+                    return catalogoOuvidorias.cadastrar(ouvBA.nome, ouvBA.tipoEnte, ouvBA.nomeEnte, ouvBA.endpoint, {from: ouvBA.conta});
+                }).then(() => {
+                    return catalogoOuvidorias.autorizar(ouvAJU.conta, {from: ouvDF.conta});
+                }).then(() => {
+                    return catalogoOuvidorias.autorizar(ouvAJU.conta, {from: ouvBA.conta});
+                }).then(() => {
+                    return catalogoOuvidorias.cadastrar(ouvAJU.nome, ouvAJU.tipoEnte, ouvAJU.nomeEnte, ouvAJU.endpoint, {from: ouvAJU.conta}).then((tx) => {
+                        assertEventoOuvidoriaCadastrada(tx, ouvAJU);
+
+                        return catalogoOuvidorias.getNumeroDeOuvidorias();
+                    }).then((numeroDeOuvidorias) => {
+                        assert.equal(uint(numeroDeOuvidorias), 3);
+
+                        return assertOuvidoria(Promise.resolve(catalogoOuvidorias), ouvAJU)
+                    });
+                });
+            });
+        });
 
         xit("quando ha tres ou mais ouvidorias cadastradas, uma candidata NAO consegue cadastrar-se tendo apenas uma autorizacao", () => { });
         xit("quando ha tres ou mais ouvidorias cadastradas, uma candidata NAO consegue cadastrar-se tendo apenas duas autorizacoes", () => { });

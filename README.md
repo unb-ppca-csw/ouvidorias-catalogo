@@ -30,9 +30,10 @@ Desta maneira, o mais importante do contrato são o construtor e dois métodos:
 - `catalogo-project/`
     - Projeto principal, contendo código **JavaScript** e **Solidity** (utilizando o framework [Truffle](https://github.com/trufflesuite/truffle)).
 - `dockerfiles/`
-    - `Dockerfile`s base para containers (`testrpc` e `truffle`) usados neste projeto.
+    - `Dockerfile`s base para containers (`testrpc` e `truffle`) usados no ambiente de execução do projet.
 - `ethereum-testnets/`
-    - `Dockerfile`s com clientes para acessar testnets ethereum (ex. `rinkeby`) utilizando o cliente [`geth`](https://github.com/ethereum/go-ethereum/wiki/geth).
+    - `Dockerfile`s com clientes para acessar testnets ethereum (ex. [`rinkeby`](https://www.rinkeby.io/)) utilizando o cliente [`geth`](https://github.com/ethereum/go-ethereum/wiki/geth).
+    - O contrato pode ser deployado numa testnet dessas para simular o que aconteceria na ethereum real.
 - `samples/`
     - Fontes em geral de arquivos interessantes que podem ser usados como exemplos.
 

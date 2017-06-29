@@ -83,7 +83,7 @@ contract CatalogoOuvidorias {
         return toString(ouvidorias[ouvidoria].ente.nome);
     }
 
-    // Uma ouvidoria cadastrada pode autorizar outra
+    /// Uma ouvidoria cadastrada pode autorizar outra
     function autorizar(address ouvidoriaCandidata) {
         require(
             isOuvidoriaCadastrada(msg.sender) &&
@@ -108,14 +108,11 @@ contract CatalogoOuvidorias {
         return true;
     }
 
-    // Uma ouvidoria com bastante votos pode cadastrar-se
+    /// Uma ouvidoria que recebeu autorizacoes suficientes pode cadastrar-se
     function cadastrar(bytes32 nome, uint8 tipoEnte, bytes32 nomeEnte, bytes32 endpoint) {
-        // TODO mover logica do construtor para funcao interna dedicada e usa-la por aqui
         require(quantidadeDeAutorizacoes(msg.sender) > 0);
 
-        // verificar se msg.sender estah no array de votadas e se qtdVotos >= min(ouvidoriasCadastradas.length, 3)
-        // caso nao tenha os votos, ERRO!
-        // caso tenha, chamar funcao refatorada do TODO acima
+        inserirOuvidoriaNoCadastro(msg.sender, nome, tipoEnte, nomeEnte, endpoint);
         ouvidoriaCadastrada(msg.sender, nome, tipoEnte, nomeEnte, endpoint);
     }
 

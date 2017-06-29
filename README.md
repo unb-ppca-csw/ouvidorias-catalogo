@@ -9,7 +9,7 @@ impostos pelo smart contract [`CatalogoOuvidorias`](catalogo-project/contracts/C
 - Uma segunda ouvidoria poderá ser incluída, se **previamente** autorizada pela ouvidoria _inicial_.
 - Uma terceira ouvidoria poderá ser incluída, se previamente autorizada pelas _duas_ ouvidorias já cadastradas.
 - Da quarta ouvidoria em diante, poderão ser incluídas indefinidas ouvidorias, desde que cada uma seja previamente
- autorizada por **três quaisquer** ouvidorias já cadastradas.
+ autorizada por [**três quaisquer**](catalogo-project/contracts/CatalogoOuvidorias.sol#L9) ouvidorias já cadastradas.
 
 Desta maneira, o mais importante do contrato são o construtor e dois métodos:
 - Construtor `function CatalogoOuvidorias(<dados da ouvidoria inicial>)` cria, com a ouvidoria inicial, o contrato para

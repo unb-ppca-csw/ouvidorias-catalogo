@@ -25,61 +25,50 @@ Desta maneira, o mais importante do contrato são o construtor e dois métodos:
 
 # Estrutura
 
-- Pastas principais (projeto propriamente dito e suas dependências)
-    - `catalogo-project/`
-        - Projeto principal, contendo código JavaScript e Solidity (utilizando o framework [Truffle](https://github.com/trufflesuite/truffle)).
-    - `testrpc-truffle/`
-        - Simples `Dockerfile` que gera uma imagem com o `testrpc` e o `truffle` instalados.
-    - `/`
-        - Docker compose que executa o projeto (em `catalogo-project`) na imagem `testrpc-truffle`
-- Pastas auxiliares (usadas para testes ou consulta)
-    - `docker-ethereum/`
-        - Docker compose que acessa a `testnet` utilizando o cliente [`geth`](https://github.com/ethereum/go-ethereum/wiki/geth).
-    - `samples/`
-        - Fontes em geral de projetos interessantes que podem ser usados como exemplos.
+- `/`
+    - Pasta com arquivo `docker-compose.yml` que cria o ambiente de execução do projeto (em `catalogo-project`).
+- `catalogo-project/`
+    - Projeto principal, contendo código **JavaScript** e **Solidity** (utilizando o framework [Truffle](https://github.com/trufflesuite/truffle)).
+- `dockerfiles/`
+    - `Dockerfile`s base para containers (`testrpc` e `truffle`) usados neste projeto.
+- `ethereum-testnets/`
+    - `Dockerfile`s com clientes para acessar testnets ethereum (ex. `rinkeby`) utilizando o cliente [`geth`](https://github.com/ethereum/go-ethereum/wiki/geth).
+- `samples/`
+    - Fontes em geral de arquivos interessantes que podem ser usados como exemplos.
 
 
 # Roteiros
 
-Os comandos abaixo devem ser executados dentro de um container executand a imagem `testrpc-truffle`. Para subir o container, execute,
-na raiz deste projeto (isto eh, a mesma pasta onde este `README.md` se encontra) os comandos abaixo:
+O `docker-compose.yml` da raiz (isto eh, a pasta onde este `README.md` se encontra) sobe dois containers:
+ 
+- um com o `testrpc`, uma testnet Ethereum local para desenvolvimento;
+- outro com `truffle`, um framework para desenvolvimento de smart contracts. Este container abre direto no truffle console.
+
+## Subindo containers
+
+Para subir os containers e se conectar ao truffle console, execute, na raiz deste projeto, os comandos abaixo:
 
 ```shell
-# subir compose
+# Subir compose com testrpc e truffle
 docker-compose up -d
-# para localizar o container que acabou de subir 
-docker ps
-# acesse o bash do container (nele você poderah executar os demais comandos)
-# no exemplo abaixo, o nome do container encontrado no comando anterior foi ouvidoriascatalogo_node1_1
-docker exec -it ouvidoriascatalogo_node1_1 bash
+
+# Conectar-se ao container com truffle (caso nenhum exista com esse nome, use `docker ps` para encontrar o correto)
+docker attach ouvidoriascatalogo_truffle_1
 ```
 
 ## Rodar testes (unitarios/integracao)
 
 ```shell
-# Mata testrpc anterior, se existir, e sobe um testrpc novo
-pkill node && testrpc &
+# Considerando que voce estah no console truffle do container iniciado no passo acima
 
-# redeploya todos os contratos
-truffle migrate --reset --network unbtest
-
-# Executa os testes
-truffle test --network unbtest
+# Executar testes
+truffle(unbtest)> truffle test
 ```
 
 ## Rodar demonstracao
 
 ```shell
-# Mata testrpc anterior
-pkill node && testrpc &
-
-# redeploya todos os contratos
-truffle migrate --reset --network unbtest
-
-# Acessa o console
-truffle console --network unbtest
-
-# A partir de agora, dentro do console
+# Considerando que voce estah no console truffle do container iniciado no passo acima
 
 # Refaz o deploy dos contratos (caso nao tenha feito antes)
 truffle(unbtest)> migrate --reset

@@ -102,7 +102,7 @@ contract CatalogoOuvidorias {
 
     function autorizadoraNuncaAutorizouCandidata(address ouvidoriaAutorizadora, address ouvidoriaCandidata) constant returns (bool) {
         var quemJahAutorizouEstaCandidata = ouvidoriasCandidatasComAutorizacoes[ouvidoriaCandidata];
-        for (var i = 0; i < quemJahAutorizouEstaCandidata.length; i++) {
+        for (uint i = 0; i < quemJahAutorizouEstaCandidata.length; i++) {
             if (quemJahAutorizouEstaCandidata[i] == ouvidoriaAutorizadora) {
                 return false;
             }

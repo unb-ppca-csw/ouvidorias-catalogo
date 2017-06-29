@@ -163,7 +163,7 @@ contract('CatalogoOuvidorias', (accounts) => {
         const ouvCE = {
             conta: accounts[3],
             nome: "Ouvidoria Estatual do Ceara",
-            tipoEnte: 2,
+            tipoEnte: 1,
             nomeEnte: "Ceara",
             endpoint: "http://ouvidoria.ce.gov.br/"
         };
@@ -328,7 +328,35 @@ contract('CatalogoOuvidorias', (accounts) => {
             });
         });
 
-        xit("quando ha tres ou mais ouvidorias cadastradas, uma candidata consegue cadastrar-se tendo apenas tres autorizacoes", () => { });
+        it("quando ha tres ou mais ouvidorias cadastradas, uma candidata consegue cadastrar-se tendo apenas tres autorizacoes", () => {
+            return catalogoOuvidoriasPromise.then((catalogoOuvidorias) => {
+                return catalogoOuvidorias.autorizar(ouvBA.conta, {from: ouvDF.conta}).then(() => {
+                    return catalogoOuvidorias.cadastrar(ouvBA.nome, ouvBA.tipoEnte, ouvBA.nomeEnte, ouvBA.endpoint, {from: ouvBA.conta});
+                }).then(() => {
+                    return catalogoOuvidorias.autorizar(ouvAJU.conta, {from: ouvDF.conta});
+                }).then(() => {
+                    return catalogoOuvidorias.autorizar(ouvAJU.conta, {from: ouvBA.conta});
+                }).then(() => {
+                    return catalogoOuvidorias.cadastrar(ouvAJU.nome, ouvAJU.tipoEnte, ouvAJU.nomeEnte, ouvAJU.endpoint, {from: ouvAJU.conta});
+                }).then(() => {
+                    return catalogoOuvidorias.autorizar(ouvCE.conta, {from: ouvDF.conta});
+                }).then(() => {
+                    return catalogoOuvidorias.autorizar(ouvCE.conta, {from: ouvBA.conta});
+                }).then(() => {
+                    return catalogoOuvidorias.autorizar(ouvCE.conta, {from: ouvAJU.conta});
+                }).then(() => {
+                    return catalogoOuvidorias.cadastrar(ouvCE.nome, ouvCE.tipoEnte, ouvCE.nomeEnte, ouvCE.endpoint, {from: ouvCE.conta}).then((tx) => {
+                        assertEventoOuvidoriaCadastrada(tx, ouvCE);
+
+                        return catalogoOuvidorias.getNumeroDeOuvidorias();
+                    }).then((numeroDeOuvidorias) => {
+                        assert.equal(uint(numeroDeOuvidorias), 4);
+
+                        return assertOuvidoria(Promise.resolve(catalogoOuvidorias), ouvCE)
+                    });
+                });
+            });
+        });
 
     });
 

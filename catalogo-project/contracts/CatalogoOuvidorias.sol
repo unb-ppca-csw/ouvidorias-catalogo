@@ -110,7 +110,7 @@ contract CatalogoOuvidorias {
 
     /// Uma ouvidoria que recebeu autorizacoes suficientes pode cadastrar-se
     function cadastrar(bytes32 nome, uint8 tipoEnte, bytes32 nomeEnte, bytes32 endpoint) {
-        require(quantidadeDeAutorizacoes(msg.sender) > 0);
+        require(quantidadeDeAutorizacoes(msg.sender) >= quantidadeDeAutorizacoesNecessariasParaUmaNovaOuvidoriaPoderSeCadastrar());
 
         inserirOuvidoriaNoCadastro(msg.sender, nome, tipoEnte, nomeEnte, endpoint);
         ouvidoriaCadastrada(msg.sender, nome, tipoEnte, nomeEnte, endpoint);
@@ -118,6 +118,13 @@ contract CatalogoOuvidorias {
 
     function quantidadeDeAutorizacoes(address ouvidoriaCandidata) constant returns (uint) {
         return ouvidoriasCandidatasComAutorizacoes[ouvidoriaCandidata].length;
+    }
+
+    function quantidadeDeAutorizacoesNecessariasParaUmaNovaOuvidoriaPoderSeCadastrar() constant returns (uint) {
+        if (enderecosOuvidorias.length < 2) {
+            return enderecosOuvidorias.length;
+        }
+        return 2;
     }
 
     // converte bytes32 em string

@@ -233,7 +233,7 @@ contract('CatalogoOuvidorias', (accounts) => {
             });
         });
 
-        xit("quando ha somente duas ouvidorias cadastradas, uma candidata NAO consegue cadastrar-se tendo apenas uma autorizacao", () => {
+        it("quando ha somente duas ouvidorias cadastradas, uma candidata NAO consegue cadastrar-se tendo apenas uma autorizacao", () => {
             return catalogoOuvidoriasPromise.then((catalogoOuvidorias) => {
                 return catalogoOuvidorias.autorizar(ouvBA.conta, {from: ouvDF.conta}).then(() => {
                     return catalogoOuvidorias.cadastrar(ouvBA.nome, ouvBA.tipoEnte, ouvBA.nomeEnte, ouvBA.endpoint, {from: ouvBA.conta});
@@ -241,7 +241,7 @@ contract('CatalogoOuvidorias', (accounts) => {
                     return catalogoOuvidorias.autorizar(ouvAJU.conta, {from: ouvDF.conta});
                 }).then(() => {
                     return catalogoOuvidorias.cadastrar(ouvAJU.conta, ouvAJU.tipoEnte, ouvAJU.nomeEnte, ouvAJU.endpoint, {from: ouvAJU.conta}).then(() => {
-                        fail("como a ouvAJU nao recebeu uma autorizacao, nao poderia se cadastrar")
+                        fail("como a ouvAJU nao recebeu duas autorizacoes, nao poderia se cadastrar")
                     }, (erro) => {
                         assertRequireFalhou(erro);
                     });

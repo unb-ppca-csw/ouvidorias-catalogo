@@ -191,13 +191,13 @@ contract('CatalogoOuvidorias', (accounts) => {
             return catalogoOuvidoriasPromise.then((catalogoOuvidorias) => {
                 return catalogoOuvidorias.autorizar(ouvBA.conta, {from: ouvDF.conta}).then(() => {
                     return catalogoOuvidorias.cadastrar(ouvBA.nome, ouvBA.tipoEnte, ouvBA.nomeEnte, ouvBA.endpoint, {from: ouvBA.conta}).then((tx) => {
-                        assertEventoOuvidoriaCadastrada(
-                            tx,
-                            ouvBA
-                        );
+                        assertEventoOuvidoriaCadastrada(tx, ouvBA);
+
                         return catalogoOuvidorias.getNumeroDeOuvidorias();
                     }).then((numeroDeOuvidorias) => {
                         assert.equal(uint(numeroDeOuvidorias), 2);
+
+                        return assertOuvidoria(Promise.resolve(catalogoOuvidorias), ouvBA)
                     });
                 });
             });

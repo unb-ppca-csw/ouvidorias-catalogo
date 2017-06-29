@@ -60,26 +60,23 @@ function assertEventoOuvidoriaCadastrada(resultadoTransacao, eventoEsperado) {
     );
 }
 
-function assertPrimeiraOuvidoria(contractInstance, _account, _nome, _enteTipo, _enteNome, _endpoint) {
-    return contractInstance.then((co) => {
-        let primeiraOuvidoriaAccount = _account;
-        let primeiraOuvidoria = {};
-        return co.getOuvidoriaNome(primeiraOuvidoriaAccount).then((nome) => {
-            primeiraOuvidoria.nome = nome;
-            return co.getOuvidoriaEnteTipo(primeiraOuvidoriaAccount);
-        }).then((enteTipo) => {
-            primeiraOuvidoria.enteTipo = enteTipo;
-            return co.getOuvidoriaEnteNome(primeiraOuvidoriaAccount);
-        }).then((enteNome) => {
-            primeiraOuvidoria.enteNome = enteNome;
-            return co.getOuvidoriaEndpoint(primeiraOuvidoriaAccount);
-        }).then((ouvidoriaEndpoint) => {
-            primeiraOuvidoria.ouvidoriaEndpoint = ouvidoriaEndpoint;
-
-            assert.equal(primeiraOuvidoria.nome, _nome);
-            assert.equal(TipoEnte[primeiraOuvidoria.enteTipo.c[0]], _enteTipo);
-            assert.equal(primeiraOuvidoria.enteNome, _enteNome);
-            assert.equal(primeiraOuvidoria.ouvidoriaEndpoint, _endpoint);
+function assertOuvidoria(catalogoOuvidoriasPromise, ouvidoriaEsperada) {
+    return catalogoOuvidoriasPromise.then((co) => {
+        let ouvidoriaObtida = {};
+        return co.getOuvidoriaNome(ouvidoriaEsperada.conta).then((nome) => {
+            ouvidoriaObtida.nome = nome;
+            return co.getOuvidoriaEnteTipo(ouvidoriaEsperada.conta);
+        }).then((tipoEnte) => {
+            ouvidoriaObtida.tipoEnte = uint(tipoEnte);
+            return co.getOuvidoriaEnteNome(ouvidoriaEsperada.conta);
+        }).then((nomeEnte) => {
+            ouvidoriaObtida.nomeEnte = nomeEnte;
+            return co.getOuvidoriaEndpoint(ouvidoriaEsperada.conta);
+        }).then((_endpoint) => {
+            assert.equal(ouvidoriaObtida.nome, ouvidoriaEsperada.nome);
+            assert.equal(ouvidoriaObtida.tipoEnte, ouvidoriaEsperada.tipoEnte);
+            assert.equal(ouvidoriaObtida.nomeEnte, ouvidoriaEsperada.nomeEnte);
+            assert.equal(_endpoint, ouvidoriaEsperada.endpoint);
         });
     });
 }
@@ -91,24 +88,27 @@ function assertPrimeiraOuvidoria(contractInstance, _account, _nome, _enteTipo, _
 contract('CatalogoOuvidorias', (accounts) => {
 
     it("script de deploy padrao constroi corretamente o contrato inicial", () => {
-        let contractInstance = CatalogoOuvidorias.deployed();
+        const ouvGeral = {
+            conta: accounts[0],
+            nome: "CGU-OGU",
+            tipoEnte: 0,
+            nomeEnte: "Uniao",
+            endpoint: "http://cgu.gov.br/ogu"
+        };
 
-        return assertPrimeiraOuvidoria(
-            contractInstance,
-            accounts[0],
-            'CGU',
-            'Uniao',
-            'Uniao',
-            'http://cgu.gov.br/ouv'
+        let catalogoOuvidoriasPromise = CatalogoOuvidorias.deployed();
+
+        return assertOuvidoria(
+            catalogoOuvidoriasPromise,
+            ouvGeral
         );
     });
 
-    describe("CatalogoOuvidorias criado em testes", () => {
+    describe("criado ambiente de testes", () => {
         const ouvDF = {
             conta: accounts[0],
             nome: "CGU-DF",
             tipoEnte: 1,
-            tipoPorExtenso: "Estado/DF",
             nomeEnte: "DF",
             endpoint: "http://cgu.gov.br/ouv-ba"
         };
@@ -133,15 +133,8 @@ contract('CatalogoOuvidorias', (accounts) => {
             catalogoOuvidoriasPromise = CatalogoOuvidorias.new(ouvDF.nome, ouvDF.tipoEnte, ouvDF.nomeEnte, ouvDF.endpoint);
         });
 
-        it("construtor cria corretamente catalogo de testes", () => {
-            return assertPrimeiraOuvidoria(
-                catalogoOuvidoriasPromise,
-                ouvDF.conta,
-                ouvDF.nome,
-                ouvDF.tipoPorExtenso,
-                ouvDF.nomeEnte,
-                ouvDF.endpoint
-            );
+        it("construtor cria catalogo com uma ouvidoria cadastrada inicialmente", () => {
+            return assertOuvidoria(catalogoOuvidoriasPromise, ouvDF);
         });
 
         it("ouvidoria jah cadastrada pode chamar autorizar", () => {

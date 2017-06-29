@@ -1,0 +1,4 @@
+Nao estou usando este dockerfile (com a versao 3.3.0 do truffle), pois ela aparenta ter
+um bug: https://github.com/trufflesuite/truffle/issues/325
+
+Por isso estou usando a imagem "desmart/truffle:3.2" no docker-compose raiz.

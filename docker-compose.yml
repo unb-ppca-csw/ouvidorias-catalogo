@@ -1,18 +1,15 @@
-version: '2'
+testrpc:
+    build: ./dockerfiles/testrpc
+    ports:
+        - 8545
 
-networks:
-    ethereum-network:
-        driver: bridge
-
-services:
-
-    node1:
-        build: ./testrpc-truffle
-        networks:
-            - ethereum-network
-        ports:
-            - "8001:8545"
-        volumes:
-            - "./catalogo-project:/catalogo"
-        working_dir: /catalogo
-        command: bash -c "while true; do sleep 2; done"
+truffle:
+    image: desmart/truffle:3.2
+    links:
+        - testrpc
+    volumes:
+        - "./catalogo-project:/catalogo"
+    working_dir: /catalogo
+    stdin_open: true
+    tty: true
+    command: truffle console --network unbtest

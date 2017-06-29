@@ -304,7 +304,30 @@ contract('CatalogoOuvidorias', (accounts) => {
             });
         });
 
-        xit("quando ha tres ou mais ouvidorias cadastradas, uma candidata NAO consegue cadastrar-se tendo apenas duas autorizacoes", () => { });
+        it("quando ha tres ou mais ouvidorias cadastradas, uma candidata NAO consegue cadastrar-se tendo apenas duas autorizacoes", () => {
+            return catalogoOuvidoriasPromise.then((catalogoOuvidorias) => {
+                return catalogoOuvidorias.autorizar(ouvBA.conta, {from: ouvDF.conta}).then(() => {
+                    return catalogoOuvidorias.cadastrar(ouvBA.nome, ouvBA.tipoEnte, ouvBA.nomeEnte, ouvBA.endpoint, {from: ouvBA.conta});
+                }).then(() => {
+                    return catalogoOuvidorias.autorizar(ouvAJU.conta, {from: ouvDF.conta});
+                }).then(() => {
+                    return catalogoOuvidorias.autorizar(ouvAJU.conta, {from: ouvBA.conta});
+                }).then(() => {
+                    return catalogoOuvidorias.cadastrar(ouvAJU.nome, ouvAJU.tipoEnte, ouvAJU.nomeEnte, ouvAJU.endpoint, {from: ouvAJU.conta});
+                }).then(() => {
+                    return catalogoOuvidorias.autorizar(ouvCE.conta, {from: ouvDF.conta});
+                }).then(() => {
+                    return catalogoOuvidorias.autorizar(ouvCE.conta, {from: ouvBA.conta});
+                }).then(() => {
+                    return catalogoOuvidorias.cadastrar(ouvCE.nome, ouvCE.tipoEnte, ouvCE.nomeEnte, ouvCE.endpoint, {from: ouvCE.conta}).then(() => {
+                        fail("como a ouvCE soh recebeu duas autorizacoes, nao poderia se cadastrar (precisaria de 3)")
+                    }, (erro) => {
+                        assertRequireFalhou(erro);
+                    });
+                });
+            });
+        });
+
         xit("quando ha tres ou mais ouvidorias cadastradas, uma candidata consegue cadastrar-se tendo apenas tres autorizacoes", () => { });
 
     });

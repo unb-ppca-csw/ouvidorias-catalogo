@@ -121,10 +121,10 @@ contract CatalogoOuvidorias {
     }
 
     function quantidadeDeAutorizacoesNecessariasParaUmaNovaOuvidoriaPoderSeCadastrar() constant returns (uint) {
-        if (enderecosOuvidorias.length < 2) {
+        if (enderecosOuvidorias.length < 3) {
             return enderecosOuvidorias.length;
         }
-        return 2;
+        return 3;
     }
 
     // converte bytes32 em string

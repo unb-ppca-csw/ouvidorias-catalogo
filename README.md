@@ -12,11 +12,11 @@ impostos pelo smart contract [`CatalogoOuvidorias`](catalogo-project/contracts/C
  autorizada por [**três quaisquer**](catalogo-project/contracts/CatalogoOuvidorias.sol#L9) ouvidorias já cadastradas.
 
 Desta maneira, o mais importante do contrato são o construtor e dois métodos:
-- Construtor `function CatalogoOuvidorias(<dados da ouvidoria inicial>)` cria, com a ouvidoria inicial, o contrato para
+- Construtor [`function CatalogoOuvidorias(<dados da ouvidoria inicial>)`](catalogo-project/contracts/CatalogoOuvidorias.sol#L42) cria, com a ouvidoria inicial, o contrato para
  inserção no blockchain;
-- Método `function autorizar(<endereco da ouvidoria candidata>)` é chamado por uma ouvidoria cadastrada para manifestar
+- Método [`function autorizar(<endereco da account da ouvidoria candidata>)`](catalogo-project/contracts/CatalogoOuvidorias.sol#L89) é chamado por uma ouvidoria cadastrada para manifestar
  sua autorização ao cadastro de uma ouvidoria candidata.
-- Método `function cadastrar(<dados da ouvidoria candidata>)` é chamado por uma ouvidoria candidata que já tenha acumulado
+- Método [`function cadastrar(<dados da ouvidoria candidata>)`](catalogo-project/contracts/CatalogoOuvidorias.sol#L115) é chamado por uma ouvidoria candidata que já tenha acumulado
  o número de autorizações exigidas para entrar no cadastro de ouvidorias.
 
 # Requisitos do Ambiente de Execução

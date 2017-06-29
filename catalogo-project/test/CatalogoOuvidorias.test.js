@@ -143,14 +143,14 @@ contract('CatalogoOuvidorias', (accounts) => {
             conta: accounts[0],
             nome: "CGU-DF",
             tipoEnte: 1,
-            nomeEnte: "DF",
-            endpoint: "http://cgu.gov.br/ouv-ba"
+            nomeEnte: "Distrito Federal",
+            endpoint: "http://cgu.gov.br/ouv-df"
         };
         const ouvBA = {
             conta: accounts[1],
             nome: "CGU-BA",
             tipoEnte: 1,
-            nomeEnte: "BA",
+            nomeEnte: "Bahia",
             endpoint: "http://cgu.gov.br/ouv-ba"
         };
         const ouvAJU = {
@@ -159,6 +159,13 @@ contract('CatalogoOuvidorias', (accounts) => {
             tipoEnte: 2,
             nomeEnte: "Aracaju-SE",
             endpoint: "http://aracaju.se.gov.br/ouv"
+        };
+        const ouvCE = {
+            conta: accounts[3],
+            nome: "Ouvidoria Estatual do Ceara",
+            tipoEnte: 2,
+            nomeEnte: "Ceara",
+            endpoint: "http://ouvidoria.ce.gov.br/"
         };
 
         let catalogoOuvidoriasPromise;
@@ -275,7 +282,28 @@ contract('CatalogoOuvidorias', (accounts) => {
             });
         });
 
-        xit("quando ha tres ou mais ouvidorias cadastradas, uma candidata NAO consegue cadastrar-se tendo apenas uma autorizacao", () => { });
+        it("quando ha tres ou mais ouvidorias cadastradas, uma candidata NAO consegue cadastrar-se tendo apenas uma autorizacao", () => {
+            return catalogoOuvidoriasPromise.then((catalogoOuvidorias) => {
+                return catalogoOuvidorias.autorizar(ouvBA.conta, {from: ouvDF.conta}).then(() => {
+                    return catalogoOuvidorias.cadastrar(ouvBA.nome, ouvBA.tipoEnte, ouvBA.nomeEnte, ouvBA.endpoint, {from: ouvBA.conta});
+                }).then(() => {
+                    return catalogoOuvidorias.autorizar(ouvAJU.conta, {from: ouvDF.conta});
+                }).then(() => {
+                    return catalogoOuvidorias.autorizar(ouvAJU.conta, {from: ouvBA.conta});
+                }).then(() => {
+                    return catalogoOuvidorias.cadastrar(ouvAJU.nome, ouvAJU.tipoEnte, ouvAJU.nomeEnte, ouvAJU.endpoint, {from: ouvAJU.conta});
+                }).then(() => {
+                    return catalogoOuvidorias.autorizar(ouvCE.conta, {from: ouvDF.conta});
+                }).then(() => {
+                    return catalogoOuvidorias.cadastrar(ouvCE.nome, ouvCE.tipoEnte, ouvCE.nomeEnte, ouvCE.endpoint, {from: ouvCE.conta}).then(() => {
+                        fail("como a ouvCE soh recebeu uma autorizacao, nao poderia se cadastrar (precisaria de 3)")
+                    }, (erro) => {
+                        assertRequireFalhou(erro);
+                    });
+                });
+            });
+        });
+
         xit("quando ha tres ou mais ouvidorias cadastradas, uma candidata NAO consegue cadastrar-se tendo apenas duas autorizacoes", () => { });
         xit("quando ha tres ou mais ouvidorias cadastradas, uma candidata consegue cadastrar-se tendo apenas tres autorizacoes", () => { });
 

@@ -6,6 +6,8 @@ pragma solidity ^0.4.11;
 */
 contract CatalogoOuvidorias {
 
+    uint constant NUMERO_DE_AUTORIZACOES_EXIGIDAS_PARA_UMA_NOVA_OUVIDORIA_PODER_CADASTRARSE = 3;
+
     enum TipoEnte { Uniao, Estado, Municipio }
 
     struct Ente {
@@ -121,10 +123,10 @@ contract CatalogoOuvidorias {
     }
 
     function quantidadeDeAutorizacoesNecessariasParaUmaNovaOuvidoriaPoderSeCadastrar() constant returns (uint) {
-        if (enderecosOuvidorias.length < 3) {
+        if (enderecosOuvidorias.length < NUMERO_DE_AUTORIZACOES_EXIGIDAS_PARA_UMA_NOVA_OUVIDORIA_PODER_CADASTRARSE) {
             return enderecosOuvidorias.length;
         }
-        return 3;
+        return NUMERO_DE_AUTORIZACOES_EXIGIDAS_PARA_UMA_NOVA_OUVIDORIA_PODER_CADASTRARSE;
     }
 
     // converte bytes32 em string

@@ -92,7 +92,9 @@ function assertEventoOuvidoriaCadastrada(resultadoTransacao, eventoEsperado) {
 
 function assertOuvidoria(catalogoOuvidoriasPromise, ouvidoriaEsperada) {
     return catalogoOuvidoriasPromise.then((co) => {
-        let ouvidoriaObtida = {};
+        let ouvidoriaObtida = {
+            conta: ouvidoriaEsperada.conta
+        };
         return co.getOuvidoriaNome(ouvidoriaEsperada.conta).then((nome) => {
             ouvidoriaObtida.nome = nome;
             return co.getOuvidoriaEnteTipo(ouvidoriaEsperada.conta);
@@ -103,10 +105,12 @@ function assertOuvidoria(catalogoOuvidoriasPromise, ouvidoriaEsperada) {
             ouvidoriaObtida.nomeEnte = nomeEnte;
             return co.getOuvidoriaEndpoint(ouvidoriaEsperada.conta);
         }).then((_endpoint) => {
-            assert.equal(ouvidoriaObtida.nome, ouvidoriaEsperada.nome);
-            assert.equal(ouvidoriaObtida.tipoEnte, ouvidoriaEsperada.tipoEnte);
-            assert.equal(ouvidoriaObtida.nomeEnte, ouvidoriaEsperada.nomeEnte);
-            assert.equal(_endpoint, ouvidoriaEsperada.endpoint);
+            ouvidoriaObtida.endpoint = _endpoint;
+
+            assert.deepEqual(
+                ouvidoriaObtida,
+                ouvidoriaEsperada
+            );
         });
     });
 }

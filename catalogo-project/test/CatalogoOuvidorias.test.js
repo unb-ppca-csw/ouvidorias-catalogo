@@ -1,7 +1,37 @@
 const TipoEnte = require("../src/TipoEnte");
 const CatalogoOuvidorias = artifacts.require("./CatalogoOuvidorias.sol");
 
-/* FUNCOES UTILITARIAS */
+/**
+ * @function contract
+ */
+
+/**
+ * @namespace artifacts
+ */
+
+/**
+ * @typedef {Object} uint
+ * @property {Array} c
+ */
+
+/**
+ * @typedef {Object} Transacao
+ * @property {Array} logs
+ */
+
+/**
+ * @typedef {Object} CatalogoOuvidorias
+ * @property {Function} deployed
+ * @property {Function} new
+ * @property {Function} autorizar
+ * @property {Function} cadastrar
+ * @property {Function} getNumeroDeOuvidorias
+ * @property {Function} getOuvidoriaNome
+ * @property {Function} getOuvidoriaEnteTipo
+ * @property {Function} getOuvidoriaEnteNome
+ * @property {Function} getOuvidoriaEndpoint
+ */
+
 
 function fail(mensagem) {
     assert.fail(false, false, mensagem);

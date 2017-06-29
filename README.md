@@ -26,11 +26,11 @@ Desta maneira, o mais importante do contrato são o construtor e dois métodos:
 # Estrutura
 
 - `/`
-    - Pasta com arquivo `docker-compose.yml` que cria o ambiente de execução do projeto (em `catalogo-project`).
+    - Pasta com arquivo `docker-compose.yml` que cria o ambiente de execução do projeto (que está na pasta `catalogo-project`/).
 - `catalogo-project/`
     - Projeto principal, contendo código **JavaScript** e **Solidity** (utilizando o framework [Truffle](https://github.com/trufflesuite/truffle)).
 - `dockerfiles/`
-    - `Dockerfile`s base para containers (`testrpc` e `truffle`) usados no ambiente de execução do projet.
+    - `Dockerfile`s para containers (`testrpc` e `truffle`) usados no ambiente de execução do projeto.
 - `ethereum-testnets/`
     - `Dockerfile`s com clientes para acessar testnets ethereum (ex. [`rinkeby`](https://www.rinkeby.io/)) utilizando o cliente [`geth`](https://github.com/ethereum/go-ethereum/wiki/geth).
     - O contrato pode ser deployado numa testnet dessas para simular o que aconteceria na ethereum real.
@@ -43,7 +43,7 @@ Desta maneira, o mais importante do contrato são o construtor e dois métodos:
 O `docker-compose.yml` da raiz (isto eh, a pasta onde este `README.md` se encontra) sobe dois containers:
  
 - um com o `testrpc`, uma testnet Ethereum local para desenvolvimento;
-- outro com `truffle`, um framework para desenvolvimento de smart contracts. Este container abre direto no truffle console.
+- outro com `truffle`, um framework para desenvolvimento de *smart contracts*. Este container abre direto no [truffle console](http://truffleframework.com/docs/getting_started/console).
 
 ## Subindo containers
 
@@ -53,7 +53,9 @@ Para subir os containers e se conectar ao truffle console, execute, na raiz dest
 # Subir compose com testrpc e truffle
 docker-compose up -d
 
-# Conectar-se ao container com truffle (caso nenhum exista com esse nome, use `docker ps` para encontrar o correto)
+# Conectar-se ao container com truffle
+# (Obs.: caso nenhum exista com esse nome, use `docker ps` para encontrar o correto. Além
+# disso, o comando docker-compose up acima também imprime o nome do container criado.)
 docker attach ouvidoriascatalogo_truffle_1
 ```
 
@@ -63,7 +65,7 @@ docker attach ouvidoriascatalogo_truffle_1
 # Considerando que voce estah no console truffle do container iniciado no passo acima
 
 # Executar testes
-truffle(unbtest)> truffle test
+truffle(unbtest)> test
 ```
 
 ## Rodar demonstracao

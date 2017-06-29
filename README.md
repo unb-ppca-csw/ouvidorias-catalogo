@@ -67,10 +67,13 @@ truffle(unbtest)> truffle test
 
 ## Rodar demonstracao
 
+O [script de demonstração](catalogo-project/src/demonstracao.js) é só o que o nome diz, demonstração. O [script de testes](catalogo-project/test/CatalogoOuvidorias.test.js) contém um uso muito mais avançado
+ de todos os métodos do _smart contract_, explorando todas suas possibilidades.
+
 ```shell
 # Considerando que voce estah no console truffle do container iniciado no passo acima
 
-# Refaz o deploy dos contratos (caso nao tenha feito antes)
+# Faz o deploy dos contratos, caso nao tenha feito antes, ou refaz, caso jah tenha.
 truffle(unbtest)> migrate --reset
 ...
 

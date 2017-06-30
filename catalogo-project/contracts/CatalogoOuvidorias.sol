@@ -27,7 +27,7 @@ contract CatalogoOuvidorias {
         bool existe;
     }
 
-    address[] enderecosOuvidorias;
+    address[] contasOuvidorias;
 
     mapping(address => Ouvidoria) private ouvidorias;
 
@@ -51,10 +51,10 @@ contract CatalogoOuvidorias {
             endpoint: endpoint,
             existe: true
         });
-        enderecosOuvidorias.push(conta);
+        contasOuvidorias.push(conta);
     }
 
-    function toTipoEnte(uint8 tipo) returns (TipoEnte) {
+    function toTipoEnte(uint8 tipo) constant returns (TipoEnte) {
         if (tipo == 0) return TipoEnte.Uniao;
         if (tipo == 1) return TipoEnte.Estado;
         if (tipo == 2) return TipoEnte.Municipio;
@@ -62,11 +62,11 @@ contract CatalogoOuvidorias {
     }
 
     function getNumeroDeOuvidorias() constant returns (uint) {
-        return enderecosOuvidorias.length;
+        return contasOuvidorias.length;
     }
 
-    function getEnderecoOuvidoria(uint indiceDaOuvidoriaNoArray) constant returns (address) {
-        return enderecosOuvidorias[indiceDaOuvidoriaNoArray];
+    function getContaOuvidoria(uint indiceDaOuvidoriaNoArray) constant returns (address) {
+        return contasOuvidorias[indiceDaOuvidoriaNoArray];
     }
 
     function getOuvidoriaNome(address contaOuvidoria) constant returns (string) {
@@ -124,8 +124,8 @@ contract CatalogoOuvidorias {
     }
 
     function quantidadeDeAutorizacoesNecessariasParaUmaNovaOuvidoriaPoderSeCadastrar() constant returns (uint) {
-        if (enderecosOuvidorias.length < NUMERO_DE_AUTORIZACOES_EXIGIDAS_PARA_UMA_NOVA_OUVIDORIA_PODER_CADASTRARSE) {
-            return enderecosOuvidorias.length;
+        if (contasOuvidorias.length < NUMERO_DE_AUTORIZACOES_EXIGIDAS_PARA_UMA_NOVA_OUVIDORIA_PODER_CADASTRARSE) {
+            return contasOuvidorias.length;
         }
         return NUMERO_DE_AUTORIZACOES_EXIGIDAS_PARA_UMA_NOVA_OUVIDORIA_PODER_CADASTRARSE;
     }

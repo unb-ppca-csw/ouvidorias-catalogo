@@ -47,14 +47,21 @@ Desta maneira, o mais importante do contrato são o construtor e dois métodos:
 
 # Roteiros
 
+Para testar o da aplicação, existem dois roteiros possíveis:
+- rodar os testes automatizados (e comandos quaisquer) numa testnet local (em memória);
+- explorar o contrato deployado na testnet "real" [rinkeby](https://www.rinkeby.io/), através das ferramentas
+ que ela disponibiliza.
+ 
+Siga abaixo os passos para executar qualquer um desses dois roteiros.
+
+## Roteiro testnet local e testes automatizados
+
 O `docker-compose.yml` da raiz (isto eh, a pasta onde este `README.md` se encontra) sobe dois containers:
  
 - um com o `testrpc`, uma testnet Ethereum local para desenvolvimento;
 - outro com `truffle`, um framework para desenvolvimento de *smart contracts*. Este container abre direto no [truffle console](http://truffleframework.com/docs/getting_started/console).
 
-## Subindo containers
-
-Para subir os containers e se conectar ao truffle console, execute, na raiz deste projeto, os comandos abaixo:
+Para subi-los e se conectar ao truffle console, execute, na raiz deste projeto, os comandos abaixo:
 
 ```shell
 # Subir compose com testrpc e truffle
@@ -66,7 +73,7 @@ docker-compose up -d
 docker attach ouvidoriascatalogo_truffle_1
 ```
 
-## Rodar testes (unitarios/integracao)
+### Rodar testes (unitarios/integracao)
 
 ```shell
 # Considerando que voce estah no console truffle do container iniciado no passo acima
@@ -75,7 +82,7 @@ docker attach ouvidoriascatalogo_truffle_1
 truffle(unbtest)> test
 ```
 
-## Rodar demonstracao
+### Rodar demonstracao
 
 O [script de demonstração](catalogo-project/src/demonstracao.js) é só o que o nome diz, demonstração. O [script de testes](catalogo-project/test/CatalogoOuvidorias.test.js) contém um uso muito mais avançado
  de todos os métodos do _smart contract_, explorando todas suas possibilidades.
@@ -90,6 +97,13 @@ truffle(unbtest)> migrate --reset
 # Executa script com varias demonstracoes
 truffle(unbtest)> exec src/demonstracao.js
 ```
+
+## Roteiro testnet rinkeby
+
+Account: [`0x1750dd0f8cd22ee9d849ab11ebc62adb37ffc10a`](https://rinkeby.etherscan.io/address/0x1750dd0f8cd22ee9d849ab11ebc62adb37ffc10a)
+
+- Site principal: https://www.rinkeby.io/
+- Block explorer: https://rinkeby.etherscan.io/
 
 
 # Outros

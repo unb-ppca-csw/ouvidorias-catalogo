@@ -65,46 +65,46 @@ contract CatalogoOuvidorias {
         return enderecosOuvidorias.length;
     }
 
-    function getEnderecoOuvidoria(uint i) constant returns (address) {
-        return enderecosOuvidorias[i];
+    function getEnderecoOuvidoria(uint indiceDaOuvidoriaNoArray) constant returns (address) {
+        return enderecosOuvidorias[indiceDaOuvidoriaNoArray];
     }
 
-    function getOuvidoriaNome(address ouvidoria) constant returns (string) {
-        return toString(ouvidorias[ouvidoria].nome);
+    function getOuvidoriaNome(address contaOuvidoria) constant returns (string) {
+        return toString(ouvidorias[contaOuvidoria].nome);
     }
 
-    function getOuvidoriaEndpoint(address ouvidoria) constant returns (string) {
-        return toString(ouvidorias[ouvidoria].endpoint);
+    function getOuvidoriaEndpoint(address contaOuvidoria) constant returns (string) {
+        return toString(ouvidorias[contaOuvidoria].endpoint);
     }
 
-    function getOuvidoriaEnteTipo(address ouvidoria) constant returns (uint) {
-        return uint(ouvidorias[ouvidoria].ente.tipo);
+    function getOuvidoriaEnteTipo(address contaOuvidoria) constant returns (uint) {
+        return uint(ouvidorias[contaOuvidoria].ente.tipo);
     }
 
-    function getOuvidoriaEnteNome(address ouvidoria) constant returns (string) {
-        return toString(ouvidorias[ouvidoria].ente.nome);
+    function getOuvidoriaEnteNome(address contaOuvidoria) constant returns (string) {
+        return toString(ouvidorias[contaOuvidoria].ente.nome);
     }
 
     /// Uma ouvidoria cadastrada pode autorizar outra que ainda nao se cadastrou
-    function autorizar(address ouvidoriaCandidata) {
+    function autorizar(address contaOuvidoriaCandidata) {
         require(
             isOuvidoriaCadastrada(msg.sender) &&
-            !isOuvidoriaCadastrada(ouvidoriaCandidata) &&
-            autorizadoraNuncaAutorizouCandidata(msg.sender, ouvidoriaCandidata)
+            !isOuvidoriaCadastrada(contaOuvidoriaCandidata) &&
+            autorizadoraNuncaAutorizouCandidata(msg.sender, contaOuvidoriaCandidata)
         );
-        ouvidoriasCandidatasComAutorizacoes[ouvidoriaCandidata].push(msg.sender);
+        ouvidoriasCandidatasComAutorizacoes[contaOuvidoriaCandidata].push(msg.sender);
 
-        ouvidoriaAutorizada(msg.sender, ouvidoriaCandidata);
+        ouvidoriaAutorizada(msg.sender, contaOuvidoriaCandidata);
     }
 
-    function isOuvidoriaCadastrada(address enderecoOuvidoria) constant returns (bool) {
-        return ouvidorias[enderecoOuvidoria].existe;
+    function isOuvidoriaCadastrada(address contaOuvidoria) constant returns (bool) {
+        return ouvidorias[contaOuvidoria].existe;
     }
 
-    function autorizadoraNuncaAutorizouCandidata(address ouvidoriaAutorizadora, address ouvidoriaCandidata) constant returns (bool) {
-        var quemJahAutorizouEstaCandidata = ouvidoriasCandidatasComAutorizacoes[ouvidoriaCandidata];
+    function autorizadoraNuncaAutorizouCandidata(address contaOuvidoriaAutorizadora, address contaOuvidoriaCandidata) constant returns (bool) {
+        var quemJahAutorizouEstaCandidata = ouvidoriasCandidatasComAutorizacoes[contaOuvidoriaCandidata];
         for (uint i = 0; i < quemJahAutorizouEstaCandidata.length; i++) {
-            if (quemJahAutorizouEstaCandidata[i] == ouvidoriaAutorizadora) {
+            if (quemJahAutorizouEstaCandidata[i] == contaOuvidoriaAutorizadora) {
                 return false;
             }
         }
@@ -119,8 +119,8 @@ contract CatalogoOuvidorias {
         ouvidoriaCadastrada(msg.sender, nome, tipoEnte, nomeEnte, endpoint);
     }
 
-    function quantidadeDeAutorizacoes(address ouvidoriaCandidata) constant returns (uint) {
-        return ouvidoriasCandidatasComAutorizacoes[ouvidoriaCandidata].length;
+    function quantidadeDeAutorizacoes(address contaOuvidoriaCandidata) constant returns (uint) {
+        return ouvidoriasCandidatasComAutorizacoes[contaOuvidoriaCandidata].length;
     }
 
     function quantidadeDeAutorizacoesNecessariasParaUmaNovaOuvidoriaPoderSeCadastrar() constant returns (uint) {

@@ -1,0 +1,22 @@
+#eth:
+#  image: kunstmaan/ethereum-eth
+#  stdin_open: true
+#  tty: true
+
+gethconsole:
+  image: kunstmaan/ethereum-geth-console
+  stdin_open: true
+  tty: true
+  links:
+#    - devnet
+    - morden
+
+# https://blog.ethereum.org/2016/11/20/from-morden-to-ropsten/
+morden:
+  build: .
+  stdin_open: true
+  tty: true
+  expose:
+    - 8545
+    - 30303
+

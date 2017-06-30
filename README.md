@@ -1,11 +1,15 @@
 # Catálogo de Ouvidorias
 
-Implementação do catálogo de ouvidorias utilizando smart contracts em Ethereum.
+Implementação do catálogo de ouvidorias utilizando _smart contracts_ em Ethereum.
 
-O blockchain armazenará dados das ouvidorias -- nome, ente e endpoint (URL) -- que deverão atender aos requisitos
+O blockchain armazenará os dados -- 
+[conta](catalogo-project/contracts/CatalogoOuvidorias.sol#L19) ([account Ethereum](https://github.com/ethereum/go-ethereum/wiki/Managing-your-accounts)),
+[nome](catalogo-project/contracts/CatalogoOuvidorias.sol#L20),
+[ente](catalogo-project/contracts/CatalogoOuvidorias.sol#L21) e 
+[endpoint](catalogo-project/contracts/CatalogoOuvidorias.sol#L19) (URL do site ou web service) -- das ouvidorias, que deverão atender aos requisitos
 impostos pelo smart contract [`CatalogoOuvidorias`](catalogo-project/contracts/CatalogoOuvidorias.sol), resumidos como segue:
 
-- O contrato é criado no blockchain com uma ouvidoria inicial.
+- O contrato exige uma ouvidoria inicial para ser criado no blockchain.
 - Uma segunda ouvidoria poderá ser incluída, se **previamente** autorizada pela ouvidoria _inicial_.
 - Uma terceira ouvidoria poderá ser incluída, se previamente autorizada pelas _duas_ ouvidorias já cadastradas.
 - Da quarta ouvidoria em diante, poderão ser incluídas indefinidas ouvidorias, desde que cada uma seja previamente
@@ -15,9 +19,12 @@ Desta maneira, o mais importante do contrato são o construtor e dois métodos:
 - Construtor [`function CatalogoOuvidorias(<dados da ouvidoria inicial>)`](catalogo-project/contracts/CatalogoOuvidorias.sol#L42) cria, com a ouvidoria inicial, o contrato para
  inserção no blockchain;
 - Método [`function autorizar(<endereco da account da ouvidoria candidata>)`](catalogo-project/contracts/CatalogoOuvidorias.sol#L89) é chamado por uma ouvidoria cadastrada para manifestar
- sua autorização ao cadastro de uma ouvidoria candidata.
+ sua autorização ao cadastro de uma ouvidoria candidata. Ao autorizar, o método [emite](catalogo-project/contracts/CatalogoOuvidorias.sol#L97) o 
+ [**evento**](http://solidity.readthedocs.io/en/develop/contracts.html#events)
+ [`ouvidoriaAutorizada()`](catalogo-project/contracts/CatalogoOuvidorias.sol#L38) com os dados das ouvidorias autorizadora e autorizada.
 - Método [`function cadastrar(<dados da ouvidoria candidata>)`](catalogo-project/contracts/CatalogoOuvidorias.sol#L115) é chamado por uma ouvidoria candidata que já tenha acumulado
- o número de autorizações exigidas para entrar no cadastro de ouvidorias.
+ o número de autorizações exigidas para entrar no cadastro de ouvidorias. Quando executado com sucesso, este método [emite](catalogo-project/contracts/CatalogoOuvidorias.sol#L119) o
+  evento [`ouvidoriaCadastrada()`](catalogo-project/contracts/CatalogoOuvidorias.sol#L36) incluindo os dados da ouvidoria cadastrada.
 
 # Requisitos do Ambiente de Execução
 

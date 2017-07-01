@@ -192,6 +192,7 @@ O principal ponto negativo é que você precisará esperar o nó sincronizar tod
     - Ir na pasta [`ethereum-testnets/rinkeby`](ethereum-testnets/rinkeby)
     - Digitar: `docker-compose up --build`
     - Isso vai subir um nó que se conectará à rinkeby. Você precisa aguardar ele baixar todo o blockchain para poder interagir com a rede.
+        - Não se preocupe com as linhas `WARN [XX-XX|XX:XX:XX] Block sealing failed     err=unauthorized`, elas não têm impacto no escopo em que estamos.
 
 - Acesse a IDE
     - Comece acessando a URL abaixo:

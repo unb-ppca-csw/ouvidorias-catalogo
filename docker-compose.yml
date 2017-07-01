@@ -1,7 +1,7 @@
 testrpc:
     build: ./dockerfiles/testrpc
     ports:
-        - 8545
+        - "8545:8545"
 
 truffle:
     image: desmart/truffle:3.2

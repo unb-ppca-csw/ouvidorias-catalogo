@@ -173,7 +173,7 @@ A seguir o passo a passo:
             - Ir na pasta [`ethereum-testnets/rinkeby`](ethereum-testnets/rinkeby)
             - Digitar: `docker-compose up --build`
             - Isso vai subir um nó que se conectará à rinkeby. Você precisa aguardar ele baixar todo o blockchain para poder interagir com ele.
-            - Aba `Contract` -> Na combo `Environment`, selecione `Web3 Provider` -> Na modal digite `http://localhost:8546`
+            - Aba `Contract` -> Na combo `Environment`, selecione `Web3 Provider` -> Na modal digite `http://localhost:8546` (note o **SEIS** ao final)
                 - Note que como o serviço do container é servido via HTTP, você precisará [acessar a IDE via HTTP (e não HTTPS)](https://remix.ethereum.org/#gist=d414cee109931d333e39fd5b5a8d4aa9&version=soljson-v0.4.11+commit.68ef5810.js) - você saberá disso quando o erro `Invalid JSON RPC response: ""` acontecer.
             - Agora, você pode ou deployar o contrato, ou acessar uma versão já deployada dele.
                 - Deployar:

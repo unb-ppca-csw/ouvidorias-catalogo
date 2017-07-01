@@ -168,23 +168,30 @@ Usar um nó da internet é mais simples, mas (via remix IDE) somente permite exe
 - Comece acessando a URL abaixo:
     - https://remix.ethereum.org/#gist=d414cee109931d333e39fd5b5a8d4aa9&version=soljson-v0.4.11+commit.68ef5810.js
     - Ela abre a IDE tendo como arquivo o contrato [`CatalogoOuvidorias`](catalogo-project/contracts/CatalogoOuvidorias.sol) (que foi copiado em um [gist](https://gist.github.com/acdcjunior/d414cee109931d333e39fd5b5a8d4aa9), por ser a única maneira de abrir a IDE com um arquivo pré-carregado).
-- Aba `Contract` -> Na combo `Environment`, selecione `Web3 Provider` -> Na modal digite `https://rinkeby.infura.io/`
-- Aguarde a conexão e observe que a account selecionada é `0xca35b7d915458ef540ade6068dfe2f44e8fa733c`. Essa account não é nossa, mas você conseguirá fazer consultas sem problema.
-- Acessar versão já deployada do contrato:
+- Aba `Contract` -> Na combo `Environment`, selecione `Web3 Provider` -> Na modal digite `https://rinkeby.infura.io/` e aguarde.
+- Após o carregamento, note que nenhuma das accounts (combo `Account`) disponíveis é nossa, mas você conseguirá fazer consultas sem problema.
+- Acesse versão já deployada do contrato:
     - Clique no botão `Address` (verde) e digite na modal o endereço do contrato já deployado: `0xff5a6388151086d0186c741c3af426b7cc846c52`.
-- Assim que aberto o contrato, apareceção botões com os métodos. Basta preencher os argumentos e apertar o botão do nome do método.
-    - Lembre-se de utilizar aspas duplas em argumentos do tipo `address` `"0x1750dd0f8cd22ee9d849ab11ebc62adb37ffc10a"`
+- Assim que aberto o contrato, aparecerão botões com os métodos.
+- Para executar, basta preencher os argumentos e apertar o botão do nome do método.
+    - Lembre-se de utilizar aspas duplas em argumentos do tipo `address`: `"0x1750dd0f8cd22ee9d849ab11ebc62adb37ffc10a"`
+    - Experimente chamar alguns métodos passando como argumento o endereço da account da ouvidoria inicial (a usada para criar o contrato): `"0x1750dd0f8cd22ee9d849ab11ebc62adb37ffc10a"`
+
+Importante: como a Solidity e a EVM são pé duro, quando você executar métodos que por alguma lógica falham (ex.: você querer autorizar alguém a partir de uma account sem privilégio suficiente),
+a mensagem de erro que aparece é normalmente bem estranha, parecendo ser um erro interno ao invés de um comportamento normal. Só pra você saber :)
 
 #### Subir um nó ethereum e minerar na rinkeby
 
-Usar um nó local é mais complexo, mas permite que você escolher qual account vai usar e, por consequência, conseguirá não só realizar leitura, mas também escrita no contrato.
+Usar um nó local é mais complexo, mas permite que você escolha qual account vai usar e, por consequência, conseguirá, mais facilmente, não só realizar leitura, mas também escrita no contrato.
 
-Utilize esta opção quando quiser realizar transações a partir da account `0x1750dd0f8cd22ee9d849ab11ebc62adb37ffc10a`. O ruim é que você precisará esperar o nó sincronizar todo o blockchain rinkeby.
+Utilize esta opção quando quiser realizar transações a partir da account `0x1750dd0f8cd22ee9d849ab11ebc62adb37ffc10a` ou de outras accounts que você criar.
+ 
+O principal ponto negativo é que você precisará esperar o nó sincronizar todo o blockchain rinkeby.
 
 - Suba o nó:
     - Ir na pasta [`ethereum-testnets/rinkeby`](ethereum-testnets/rinkeby)
     - Digitar: `docker-compose up --build`
-    - Isso vai subir um nó que se conectará à rinkeby. Você precisa aguardar ele baixar todo o blockchain para poder interagir com ele.
+    - Isso vai subir um nó que se conectará à rinkeby. Você precisa aguardar ele baixar todo o blockchain para poder interagir com a rede.
 
 - Acesse a IDE
     - Comece acessando a URL abaixo:
@@ -194,11 +201,13 @@ Utilize esta opção quando quiser realizar transações a partir da account `0x
         - Se o erro `Invalid JSON RPC response: ""` acontecer, certifique-se de que você está via HTTP e não HTTPS.
     - Agora, você pode ou deployar o contrato, ou acessar uma versão já deployada dele.
         - Deployar:
-            - Quando fiz o deploy pela primeira vez, digitei `"CGU-OGU", 0, "Uniao", "http://cgu.gov.br/ogu"` no campo de texto próximo ao botão `Create` (vermelho) e cliquei no botão.
-        - Acessar versão já deployada do contrato:
+            - Quando fizemos o [deploy pela primeira vez](https://rinkeby.etherscan.io/address/0xff5a6388151086d0186c741c3af426b7cc846c52), digitamos `"CGU-OGU", 0, "Uniao", "http://cgu.gov.br/ogu"` no campo de texto próximo ao botão `Create` (vermelho) e cliquei no botão.
+        - Acessar a versão já deployada do contrato:
             - Clique no botão `Address` (verde) e digite na modal o endereço do contrato já deployado: `0xff5a6388151086d0186c741c3af426b7cc846c52`.
-    - Assim que aberto o contrato, apareceção botões com os métodos. Basta preencher os argumentos e apertar o botão do nome do método.
-        - Lembre-se de utilizar aspas duplas em argumentos do tipo `address` `"0x1750dd0f8cd22ee9d849ab11ebc62adb37ffc10a"`
+    - Assim que aberto o contrato, aparecerão botões com os métodos.
+    - Para executar, basta preencher os argumentos e apertar o botão do nome do método.
+        - Lembre-se de utilizar aspas duplas em argumentos do tipo `address`: `"0x1750dd0f8cd22ee9d849ab11ebc62adb37ffc10a"`
+        - Experimente chamar alguns métodos passando como argumento o endereço da account da ouvidoria inicial (a usada para criar o contrato): `"0x1750dd0f8cd22ee9d849ab11ebc62adb37ffc10a"`
 
 
 # Outros

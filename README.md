@@ -117,7 +117,7 @@ O resultado será algo como:
 
 O [script de demonstração](catalogo-project/src/demonstracao.js) é só o que o nome diz, demonstração. O [script de testes](catalogo-project/test/CatalogoOuvidorias.test.js) contém um uso muito mais avançado
  de todos os métodos do _smart contract_, explorando todas suas possibilidades. Ainda assim, o script de demonstração é um bom
- passo (exemplo) inicial caso queiras (expandi-lo e) executar um código que exercite o contrato de outras maneiras quaisquer.
+ passo (exemplo) inicial caso deseje executar um código que exercite o contrato de outras maneiras quaisquer.
 
 ```shell
 # Considerando que voce estah no console truffle do container iniciado no passo acima
@@ -130,7 +130,7 @@ truffle(unbtest)> migrate --reset
 truffle(unbtest)> exec src/demonstracao.js
 ```
 
-Por óbvio, o resultado deste comando, variará de acordo com o conteúdo que você deixou/editou no [`src/demonstracao.js`](catalogo-project/src/demonstracao.js).
+O resultado deste comando, naturalmente, variará de acordo com o conteúdo que você deixou/editou no [`src/demonstracao.js`](catalogo-project/src/demonstracao.js).
 
 ## Roteiro testnet rinkeby
 
@@ -162,37 +162,49 @@ Ethereum Remix é uma IDE in-browser. Ela permite que você **execute métodos d
  
 A seguir o passo a passo:
 
+ Altere o "back end" da IDE para um nó conectado na rede. Duas opções:
+
+##### Utilizar um nó da internet
+
+Usar um nó da internet é mais simples, mas (via remix IDE) somente permite executar métodos de leitura do contrato.
+
 - Comece acessando a URL abaixo:
     - https://remix.ethereum.org/#gist=d414cee109931d333e39fd5b5a8d4aa9&version=soljson-v0.4.11+commit.68ef5810.js
     - Ela abre a IDE tendo como arquivo o contrato [`CatalogoOuvidorias`](catalogo-project/contracts/CatalogoOuvidorias.sol) (que foi copiado em um [gist](https://gist.github.com/acdcjunior/d414cee109931d333e39fd5b5a8d4aa9), por ser a única maneira de abrir a IDE com um arquivo pré-carregado).
-- Altere o "back end" da IDE para um nó conectado na rede. Duas opções:
-    - Usar um nó local: mais complexo, mas permite leitura e escrita.
-        - Utilize esta opção quando quiser realizar transações a partir da account `0x1750dd0f8cd22ee9d849ab11ebc62adb37ffc10a`.
-        - Não recomendada porque você precisará esperar o nó baixar todo o blockchain
-        - Passos para abrir o contrato:
-            - Ir na pasta [`ethereum-testnets/rinkeby`](ethereum-testnets/rinkeby)
-            - Digitar: `docker-compose up --build`
-            - Isso vai subir um nó que se conectará à rinkeby. Você precisa aguardar ele baixar todo o blockchain para poder interagir com ele.
-            - Aba `Contract` -> Na combo `Environment`, selecione `Web3 Provider` -> Na modal digite `http://localhost:8546` (note o **SEIS** ao final)
-                - Note que como o serviço do container é servido via HTTP, você precisará [acessar a IDE via HTTP (e não HTTPS)](https://remix.ethereum.org/#gist=d414cee109931d333e39fd5b5a8d4aa9&version=soljson-v0.4.11+commit.68ef5810.js) - você saberá disso quando o erro `Invalid JSON RPC response: ""` acontecer.
-            - Agora, você pode ou deployar o contrato, ou acessar uma versão já deployada dele.
-                - Deployar:
-                    - Quando fiz o deploy pela primeira vez, digitei `"CGU-OGU", 0, "Uniao", "http://cgu.gov.br/ogu"` no campo de texto próximo ao botão `Create` (vermelho) e cliquei no botão.
-                - Acessar versão já deployada do contrato:
-                    - Clique no botão `Address` (verde) e digite na modal o endereço do contrato já deployado: `0xff5a6388151086d0186c741c3af426b7cc846c52`.
-            - Assim que aberto o contrato, apareceção botões com os métodos. Basta preencher os argumentos e apertar o botão do nome do método.
-                - Lembre-se de utilizar aspas duplas em argumentos do tipo address `"0x1750dd0f8cd22ee9d849ab11ebc62adb37ffc10a"`
-    - Usar um nó da internet: mais simples, mas (via remix IDE) somente permite leitura
-        - Aba `Contract` -> Na combo `Environment`, selecione `Web3 Provider` -> Na modal digite `https://rinkeby.infura.io/`
-        - Aguarde a conexão e observe que a account selecionada é `0xca35b7d915458ef540ade6068dfe2f44e8fa733c`. Essa account não é nossa, mas você conseguirá fazer consultas sem problema.
+- Aba `Contract` -> Na combo `Environment`, selecione `Web3 Provider` -> Na modal digite `https://rinkeby.infura.io/`
+- Aguarde a conexão e observe que a account selecionada é `0xca35b7d915458ef540ade6068dfe2f44e8fa733c`. Essa account não é nossa, mas você conseguirá fazer consultas sem problema.
+- Acessar versão já deployada do contrato:
+    - Clique no botão `Address` (verde) e digite na modal o endereço do contrato já deployado: `0xff5a6388151086d0186c741c3af426b7cc846c52`.
+- Assim que aberto o contrato, apareceção botões com os métodos. Basta preencher os argumentos e apertar o botão do nome do método.
+    - Lembre-se de utilizar aspas duplas em argumentos do tipo `address` `"0x1750dd0f8cd22ee9d849ab11ebc62adb37ffc10a"`
+
+
+
+
+##### Subir um nó ethereum local e minerar a rinkeby
+
+Usar um nó local é mais complexo, mas permite que você escolher qual account vai usar e, por consequência, conseguirá não só realizar leitura, mas também escrita no contrato.
+
+Utilize esta opção quando quiser realizar transações a partir da account `0x1750dd0f8cd22ee9d849ab11ebc62adb37ffc10a`. O ruim é que você precisará esperar o nó sincronizar todo o blockchain rinkeby.
+
+- Suba o nó:
+    - Ir na pasta [`ethereum-testnets/rinkeby`](ethereum-testnets/rinkeby)
+    - Digitar: `docker-compose up --build`
+    - Isso vai subir um nó que se conectará à rinkeby. Você precisa aguardar ele baixar todo o blockchain para poder interagir com ele.
+
+- Acesse a IDE
+    - Comece acessando a URL abaixo:
+        - (note o HTTP, não HTTPS) http://remix.ethereum.org/#gist=d414cee109931d333e39fd5b5a8d4aa9&version=soljson-v0.4.11+commit.68ef5810.js
+        - Ela abre a IDE tendo como arquivo o contrato [`CatalogoOuvidorias`](catalogo-project/contracts/CatalogoOuvidorias.sol) (que foi copiado em um [gist](https://gist.github.com/acdcjunior/d414cee109931d333e39fd5b5a8d4aa9), por ser a única maneira de abrir a IDE com um arquivo pré-carregado).
+    - Aba `Contract` -> Na combo `Environment`, selecione `Web3 Provider` -> Na modal digite `http://localhost:8546` (note o **SEIS** ao final)
+        - Se o erro `Invalid JSON RPC response: ""` acontecer, certifique-se de que você está via HTTP e não HTTPS.
+    - Agora, você pode ou deployar o contrato, ou acessar uma versão já deployada dele.
+        - Deployar:
+            - Quando fiz o deploy pela primeira vez, digitei `"CGU-OGU", 0, "Uniao", "http://cgu.gov.br/ogu"` no campo de texto próximo ao botão `Create` (vermelho) e cliquei no botão.
         - Acessar versão já deployada do contrato:
             - Clique no botão `Address` (verde) e digite na modal o endereço do contrato já deployado: `0xff5a6388151086d0186c741c3af426b7cc846c52`.
-        - Assim que aberto o contrato, apareceção botões com os métodos. Basta preencher os argumentos e apertar o botão do nome do método.
-            - Lembre-se de utilizar aspas duplas em argumentos do tipo address `"0x1750dd0f8cd22ee9d849ab11ebc62adb37ffc10a"`
-
-
-  
-
+    - Assim que aberto o contrato, apareceção botões com os métodos. Basta preencher os argumentos e apertar o botão do nome do método.
+        - Lembre-se de utilizar aspas duplas em argumentos do tipo `address` `"0x1750dd0f8cd22ee9d849ab11ebc62adb37ffc10a"`
 
 
 # Outros

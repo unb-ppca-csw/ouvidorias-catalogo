@@ -177,7 +177,11 @@ contract('CatalogoOuvidorias', (accounts) => {
         });
 
         it("construtor cria catalogo com uma ouvidoria cadastrada inicialmente", () => {
-            return assertOuvidoria(Promise.resolve(catalogoOuvidorias), ouvDF);
+            return assertOuvidoria(Promise.resolve(catalogoOuvidorias), ouvDF).then(() => {
+                return catalogoOuvidorias.getNumeroDeOuvidorias();
+            }).then((numeroDeOuvidorias) => {
+                assert.equal(uint(numeroDeOuvidorias), 1, "É esperada exatamente uma ouvidoria no cadastro. Obtidas: " + uint(numeroDeOuvidorias));
+            });
         });
 
         it("ouvidoria jah cadastrada pode chamar autorizar", () => {

@@ -47,7 +47,7 @@ Desta maneira, o mais importante do contrato são o construtor e dois métodos:
 
 # Roteiros
 
-Para testar o da aplicação, existem dois roteiros possíveis:
+Para testar o funcionamento do contrato, existem dois roteiros possíveis:
 - rodar os testes automatizados (e comandos quaisquer) numa testnet local (em memória);
 - explorar o contrato deployado na testnet "real" [rinkeby](https://www.rinkeby.io/), através das ferramentas
  que ela disponibiliza.
@@ -65,15 +65,15 @@ Para subi-los e se conectar ao truffle console, execute, na raiz deste projeto, 
 
 ```shell
 # Subir compose com testrpc e truffle
-docker-compose up -d
+$ docker-compose up --build -d
 
 # Conectar-se ao container com truffle
 # (Obs.: caso nenhum exista com esse nome, use `docker ps` para encontrar o correto. Além
 # disso, o comando docker-compose up acima também imprime o nome do container criado.)
-docker attach ouvidoriascatalogo_truffle_1
+$ docker attach ouvidoriascatalogo_truffle_1
 ```
 
-Neste momento você estará no truffle console (que está contectado à testnet/testrpc local chamada `unbtest`) e deve ver isso:
+Neste momento você estará no truffle console (que está contectado à testnet/testrpc local chamada `unbtest`) e deve ver isto:
 
 >     truffle(unbtest)> 
 
@@ -137,9 +137,9 @@ O resultado deste comando, naturalmente, variará de acordo com o conteúdo que 
 A testnet [rinkeby](https://www.rinkeby.io/) é uma rede ethereum em todos os sentidos (a única diferença é que ela tem faucets que te dão $$ grátis), e assim apresentamos duas possibilidades de interação com o contrato que deployamos na rinkeby:
 
 - acessar os sites da rinkeby e apenas ver os dados (blocos, metadados) do contrato; ou
-- subir um par de containers 
+- utilizar a uma IDE in-browser de solidity, conectar-se a um nó rinkeby e chamar métodos do contrato. 
 
-Além do site principal, outro site que usaremos é o [rinkeby block explorer](https://rinkeby.etherscan.io/).
+Abaixo, detalhes dessas alternativas.
 
 ### Acessar os sites
 

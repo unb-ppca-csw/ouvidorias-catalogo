@@ -6,7 +6,7 @@ O blockchain armazenará os dados --
 [conta](catalogo-project/contracts/CatalogoOuvidorias.sol#L19) ([account Ethereum](https://github.com/ethereum/go-ethereum/wiki/Managing-your-accounts)),
 [nome](catalogo-project/contracts/CatalogoOuvidorias.sol#L20),
 [ente](catalogo-project/contracts/CatalogoOuvidorias.sol#L21) e 
-[endpoint](catalogo-project/contracts/CatalogoOuvidorias.sol#L19) (URL do site ou web service) -- das ouvidorias, que deverão atender aos requisitos
+[endpoint](catalogo-project/contracts/CatalogoOuvidorias.sol#L22) (URL do site ou web service) -- das ouvidorias, que deverão atender aos requisitos
 impostos pelo smart contract [`CatalogoOuvidorias`](catalogo-project/contracts/CatalogoOuvidorias.sol), resumidos como segue:
 
 - O contrato exige uma ouvidoria inicial para ser criado no blockchain.
@@ -41,8 +41,6 @@ Desta maneira, o mais importante do contrato são o construtor e dois métodos:
 - `ethereum-testnets/`
     - `Dockerfile`s com clientes para acessar testnets ethereum (ex. [`rinkeby`](https://www.rinkeby.io/)) utilizando o cliente [`geth`](https://github.com/ethereum/go-ethereum/wiki/geth).
     - O contrato pode ser deployado numa testnet dessas para simular o que aconteceria na ethereum real.
-- `samples/`
-    - Fontes em geral de arquivos interessantes que podem ser usados como exemplos.
 
 
 # Roteiros
@@ -200,7 +198,7 @@ O principal ponto negativo é que você precisará esperar o nó sincronizar tod
         - Ela abre a IDE tendo como arquivo o contrato [`CatalogoOuvidorias`](catalogo-project/contracts/CatalogoOuvidorias.sol) (que foi copiado em um [gist](https://gist.github.com/acdcjunior/d414cee109931d333e39fd5b5a8d4aa9), por ser a única maneira de abrir a IDE com um arquivo pré-carregado).
     - Aba `Contract` -> Na combo `Environment`, selecione `Web3 Provider` -> Na modal digite `http://localhost:8546` (note o **SEIS** ao final)
         - Se o erro `Invalid JSON RPC response: ""` acontecer, certifique-se de que você está via HTTP e não HTTPS.
-    - Agora, você pode ou deployar o contrato, ou acessar uma versão já deployada dele.
+    - Agora você pode ou deployar o contrato, ou acessar uma versão já deployada dele.
         - Deployar:
             - Quando fizemos o [deploy pela primeira vez](https://rinkeby.etherscan.io/address/0xff5a6388151086d0186c741c3af426b7cc846c52), digitamos `"CGU-OGU", 0, "Uniao", "http://cgu.gov.br/ogu"` no campo de texto próximo ao botão `Create` (vermelho) e cliquei no botão.
         - Acessar a versão já deployada do contrato:

@@ -143,7 +143,7 @@ Abaixo, detalhes dessas alternativas.
 
 ### Acessar os sites
 
-- Account usada:
+- Account usada para criar o contrato na rinkeby:
     - [`0x1750dd0f8cd22ee9d849ab11ebc62adb37ffc10a`](https://rinkeby.etherscan.io/address/0x1750dd0f8cd22ee9d849ab11ebc62adb37ffc10a)
     - Caso queira utilizá-la em algum site/ferramenta:
         - Arquivo UTC (private key): [`UTC--...7ffc10a`](ethereum-testnets/rinkeby/keystore/UTC--2017-06-28T04-09-45.884509900Z--1750dd0f8cd22ee9d849ab11ebc62adb37ffc10a)
@@ -151,20 +151,17 @@ Abaixo, detalhes dessas alternativas.
 - Transação que criou o contrato:
     - [`0xa5da280ff47cf13945ef440ae81773017ff10379911ad1f49101dbbb3aa6aa4d`](https://rinkeby.etherscan.io/tx/0xa5da280ff47cf13945ef440ae81773017ff10379911ad1f49101dbbb3aa6aa4d)
     - Argumentos usados (construtor) durante a criação: `"CGU-OGU", 0, "Uniao", "http://cgu.gov.br/ogu"`
-- Endereço do contrato:
+- Endereço do contrato criado:
     - [`0xff5a6388151086d0186c741c3af426b7cc846c52`](https://rinkeby.etherscan.io/address/0xff5a6388151086d0186c741c3af426b7cc846c52)
 
 
 
-### Interagir com o contrato via Ethereum Remix
+### Interagir com o contrato via Ethereum Remix (IDE in-browser)
 
-Ethereum Remix é uma IDE in-browser. Ela permite que você **execute métodos de contratos**, dentre outras coisas.
+Ethereum Remix é uma IDE in-browser. Ela permite que você **execute métodos de contratos**, dentre outras coisas. Para utilizá-la, você precisa conectar-se a um nó rinkeby.
+ Você pode subir seu próprio nó ou usar um da internet.
  
-A seguir o passo a passo:
-
- Altere o "back end" da IDE para um nó conectado na rede. Duas opções:
-
-##### Utilizar um nó da internet
+#### Utilizar um nó da internet
 
 Usar um nó da internet é mais simples, mas (via remix IDE) somente permite executar métodos de leitura do contrato.
 
@@ -178,10 +175,7 @@ Usar um nó da internet é mais simples, mas (via remix IDE) somente permite exe
 - Assim que aberto o contrato, apareceção botões com os métodos. Basta preencher os argumentos e apertar o botão do nome do método.
     - Lembre-se de utilizar aspas duplas em argumentos do tipo `address` `"0x1750dd0f8cd22ee9d849ab11ebc62adb37ffc10a"`
 
-
-
-
-##### Subir um nó ethereum local e minerar a rinkeby
+#### Subir um nó ethereum e minerar na rinkeby
 
 Usar um nó local é mais complexo, mas permite que você escolher qual account vai usar e, por consequência, conseguirá não só realizar leitura, mas também escrita no contrato.
 

@@ -73,7 +73,12 @@ docker-compose up -d
 docker attach ouvidoriascatalogo_truffle_1
 ```
 
-### Rodar testes (unitarios/integracao)
+Neste momento você estará no truffle console (que está contectado à testnet/testrpc local chamada `unbtest`) e deve ver isso:
+
+>     truffle(unbtest)> 
+
+
+#### Rodar testes automatizados
 
 ```shell
 # Considerando que voce estah no console truffle do container iniciado no passo acima
@@ -82,10 +87,37 @@ docker attach ouvidoriascatalogo_truffle_1
 truffle(unbtest)> test
 ```
 
-### Rodar demonstracao
+O resultado será algo como:
+
+> ```
+> Using network 'unbtest'.
+> 
+> Compiling ./contracts/CatalogoOuvidorias.sol...
+> 0xad109c84c8f5d759beab921fc58e2493609959a2
+> 
+> 
+>   Contract: CatalogoOuvidorias
+>     ✓ script de deploy padrao constroi corretamente o contrato inicial (642ms)
+>     criado em ambiente de testes
+>       ✓ construtor cria catalogo com uma ouvidoria cadastrada inicialmente (862ms)
+>       ✓ ouvidoria jah cadastrada pode chamar autorizar (90ms)
+>       ✓ ouvidoria nao cadastrada NAO pode chamar autorizar (58ms)
+>       ✓ ouvidoria jah cadastrada nao pode autorizar uma outra ouvidoria mais de uma vez (153ms)
+>       ✓ ouvidoria jah cadastrada NAO pode autorizar uma outra ouvidoria jah cadastrada (308ms)
+>       ✓ candidata sem autorizacoes nao consegue cadastrar-se (56ms)
+>       ✓ quando ha somente uma ouvidoria cadastrada, uma candidata consegue cadastrar-se tendo apenas uma autorizacao (810ms)
+>       ✓ quando ha somente duas ouvidorias cadastradas, uma candidata NAO consegue cadastrar-se tendo apenas uma autorizacao (380ms)
+>       ✓ quando ha somente duas ouvidorias cadastradas, uma candidata consegue cadastrar-se tendo apenas duas autorizacoes (1212ms)
+>       ✓ quando ha tres ou mais ouvidorias cadastradas, uma candidata NAO consegue cadastrar-se tendo apenas uma autorizacao (665ms)
+>       ✓ quando ha tres ou mais ouvidorias cadastradas, uma candidata NAO consegue cadastrar-se tendo apenas duas autorizacoes (817ms)
+>       ✓ quando ha tres ou mais ouvidorias cadastradas, uma candidata consegue cadastrar-se tendo apenas tres autorizacoes (1678ms)
+> ```
+
+#### Rodar script de demonstração
 
 O [script de demonstração](catalogo-project/src/demonstracao.js) é só o que o nome diz, demonstração. O [script de testes](catalogo-project/test/CatalogoOuvidorias.test.js) contém um uso muito mais avançado
- de todos os métodos do _smart contract_, explorando todas suas possibilidades.
+ de todos os métodos do _smart contract_, explorando todas suas possibilidades. Ainda assim, o script de demonstração é um bom
+ passo (exemplo) inicial caso queiras (expandi-lo e) executar um código que exercite o contrato de outras maneiras quaisquer.
 
 ```shell
 # Considerando que voce estah no console truffle do container iniciado no passo acima
@@ -98,12 +130,69 @@ truffle(unbtest)> migrate --reset
 truffle(unbtest)> exec src/demonstracao.js
 ```
 
+Por óbvio, o resultado deste comando, variará de acordo com o conteúdo que você deixou/editou no [`src/demonstracao.js`](catalogo-project/src/demonstracao.js).
+
 ## Roteiro testnet rinkeby
 
-Account: [`0x1750dd0f8cd22ee9d849ab11ebc62adb37ffc10a`](https://rinkeby.etherscan.io/address/0x1750dd0f8cd22ee9d849ab11ebc62adb37ffc10a)
+A testnet [rinkeby](https://www.rinkeby.io/) é uma rede ethereum em todos os sentidos (a única diferença é que ela tem faucets que te dão $$ grátis), e assim apresentamos duas possibilidades de interação com o contrato que deployamos na rinkeby:
 
-- Site principal: https://www.rinkeby.io/
-- Block explorer: https://rinkeby.etherscan.io/
+- acessar os sites da rinkeby e apenas ver os dados (blocos, metadados) do contrato; ou
+- subir um par de containers 
+
+Além do site principal, outro site que usaremos é o [rinkeby block explorer](https://rinkeby.etherscan.io/).
+
+### Acessar os sites
+
+- Account usada:
+    - [`0x1750dd0f8cd22ee9d849ab11ebc62adb37ffc10a`](https://rinkeby.etherscan.io/address/0x1750dd0f8cd22ee9d849ab11ebc62adb37ffc10a)
+    - Caso queira utilizá-la em algum site/ferramenta:
+        - Arquivo UTC (private key): [`UTC--...7ffc10a`](ethereum-testnets/rinkeby/keystore/UTC--2017-06-28T04-09-45.884509900Z--1750dd0f8cd22ee9d849ab11ebc62adb37ffc10a)
+        - Senha: `unb`
+- Transação que criou o contrato:
+    - [`0xa5da280ff47cf13945ef440ae81773017ff10379911ad1f49101dbbb3aa6aa4d`](https://rinkeby.etherscan.io/tx/0xa5da280ff47cf13945ef440ae81773017ff10379911ad1f49101dbbb3aa6aa4d)
+    - Argumentos usados (construtor) durante a criação: `"CGU-OGU", 0, "Uniao", "http://cgu.gov.br/ogu"`
+- Endereço do contrato:
+    - [`0xff5a6388151086d0186c741c3af426b7cc846c52`](https://rinkeby.etherscan.io/address/0xff5a6388151086d0186c741c3af426b7cc846c52)
+
+
+
+### Interagir com o contrato via Ethereum Remix
+
+Ethereum Remix é uma IDE in-browser. Ela permite que você **execute métodos de contratos**, dentre outras coisas.
+ 
+A seguir o passo a passo:
+
+- Comece acessando a URL abaixo:
+    - https://remix.ethereum.org/#gist=d414cee109931d333e39fd5b5a8d4aa9&version=soljson-v0.4.11+commit.68ef5810.js
+    - Ela abre a IDE tendo como arquivo o contrato [`CatalogoOuvidorias`](catalogo-project/contracts/CatalogoOuvidorias.sol) (que foi copiado em um [gist](https://gist.github.com/acdcjunior/d414cee109931d333e39fd5b5a8d4aa9), por ser a única maneira de abrir a IDE com um arquivo pré-carregado).
+- Altere o "back end" da IDE para um nó conectado na rede. Duas opções:
+    - Usar um nó local: mais complexo, mas permite leitura e escrita.
+        - Utilize esta opção quando quiser realizar transações a partir da account `0x1750dd0f8cd22ee9d849ab11ebc62adb37ffc10a`.
+        - Não recomendada porque você precisará esperar o nó baixar todo o blockchain
+        - Passos para abrir o contrato:
+            - Ir na pasta [`ethereum-testnets/rinkeby`](ethereum-testnets/rinkeby)
+            - Digitar: `docker-compose up --build`
+            - Isso vai subir um nó que se conectará à rinkeby. Você precisa aguardar ele baixar todo o blockchain para poder interagir com ele.
+            - Aba `Contract` -> Na combo `Environment`, selecione `Web3 Provider` -> Na modal digite `http://localhost:8546`
+                - Note que como o serviço do container é servido via HTTP, você precisará [acessar a IDE via HTTP (e não HTTPS)](https://remix.ethereum.org/#gist=d414cee109931d333e39fd5b5a8d4aa9&version=soljson-v0.4.11+commit.68ef5810.js) - você saberá disso quando o erro `Invalid JSON RPC response: ""` acontecer.
+            - Agora, você pode ou deployar o contrato, ou acessar uma versão já deployada dele.
+                - Deployar:
+                    - Quando fiz o deploy pela primeira vez, digitei `"CGU-OGU", 0, "Uniao", "http://cgu.gov.br/ogu"` no campo de texto próximo ao botão `Create` (vermelho) e cliquei no botão.
+                - Acessar versão já deployada do contrato:
+                    - Clique no botão `Address` (verde) e digite na modal o endereço do contrato já deployado: `0xff5a6388151086d0186c741c3af426b7cc846c52`.
+            - Assim que aberto o contrato, apareceção botões com os métodos. Basta preencher os argumentos e apertar o botão do nome do método.
+                - Lembre-se de utilizar aspas duplas em argumentos do tipo address `"0x1750dd0f8cd22ee9d849ab11ebc62adb37ffc10a"`
+    - Usar um nó da internet: mais simples, mas (via remix IDE) somente permite leitura
+        - Aba `Contract` -> Na combo `Environment`, selecione `Web3 Provider` -> Na modal digite `https://rinkeby.infura.io/`
+        - Aguarde a conexão e observe que a account selecionada é `0xca35b7d915458ef540ade6068dfe2f44e8fa733c`. Essa account não é nossa, mas você conseguirá fazer consultas sem problema.
+        - Acessar versão já deployada do contrato:
+            - Clique no botão `Address` (verde) e digite na modal o endereço do contrato já deployado: `0xff5a6388151086d0186c741c3af426b7cc846c52`.
+        - Assim que aberto o contrato, apareceção botões com os métodos. Basta preencher os argumentos e apertar o botão do nome do método.
+            - Lembre-se de utilizar aspas duplas em argumentos do tipo address `"0x1750dd0f8cd22ee9d849ab11ebc62adb37ffc10a"`
+
+
+  
+
 
 
 # Outros

@@ -4,7 +4,7 @@ testrpc:
         - "8545:8545"
 
 truffle:
-    image: desmart/truffle:3.2
+    image: acdcjunior/truffle:3.4.5
     links:
         - testrpc
     volumes:
